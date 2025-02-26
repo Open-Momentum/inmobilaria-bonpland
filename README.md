@@ -10,17 +10,17 @@ Brego thirsty prey farthest stroke pantry lot. Wilds dinner plant cheated! Last 
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/116227485?v=4" width="100"></td>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/139514766?v=4" width="100"></td>
-    <td align="center"><img src="" width="100"></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/56526074?v=4" width="100"></td>
   </tr>
   <tr>
     <td align="center"><strong>Martina A.</strong></td>
     <td align="center"><strong>Diego G.</strong></td>
-    <td align="center"><strong>Nombre M.</strong></td>
+    <td align="center"><strong>Lautaro B.</strong></td>
   </tr>
   <tr>
     <td align="center">Back-End</td>
     <td align="center">Front-End</td>
-    <td align="center">UX/UI</td>
+    <td align="center">Front-End</td>
   </tr>
   <tr>
     <td align="center">
@@ -40,32 +40,43 @@ Brego thirsty prey farthest stroke pantry lot. Wilds dinner plant cheated! Last 
       </a>
     </td>
     <td align="center">
-      <a href="">
+      <a href="https://www.linkedin.com/in/lautaro-brucart-a84757254/">
         <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="LinkedIn">
       </a>
-      <a href="">
+      <a href="https://github.com/trilaux">
         <img src="https://img.shields.io/badge/GitHub-171515?style=for-the-badge&logo=GitHub&logoColor=white" alt="GitHub">
       </a>
     </td>
   </tr>
   <tr>
-    <td align="center"><img src="" width="100"></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/200647628?v=4" width="100"></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/179750000?v=4" width="100"></td>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/73679190?v=4" width="100"></td>
   </tr>
   <tr>
-    <td align="center"><strong>Nombre A.</strong></td>
+    <td align="center"><strong>Luciana A.</strong></td>
+    <td align="center"><strong>Mauro F.</strong></td>
     <td align="center"><strong>Eduardo R.</strong></td>
   </tr>
   <tr>
-    <td align="center">Rol</td>
+    <td align="center">UX/UI</td>
+    <td align="center">Back-End</td>
     <td align="center">Front-End</td>
   </tr>
   <tr>
     <td align="center">
-      <a href="">
+      <a href="https://www.linkedin.com/in/luciana-acevedo-783a81170/">
         <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="LinkedIn">
       </a>
-      <a href="">
+      <a href="https://github.com/Lucianacevedo">
+        <img src="https://img.shields.io/badge/GitHub-171515?style=for-the-badge&logo=GitHub&logoColor=white" alt="GitHub">
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.linkedin.com/in/figueroamauro/">
+        <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/FigueroaMauro">
         <img src="https://img.shields.io/badge/GitHub-171515?style=for-the-badge&logo=GitHub&logoColor=white" alt="GitHub">
       </a>
     </td>
