@@ -36,6 +36,6 @@ public class Rol implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarioList;//
     
 }

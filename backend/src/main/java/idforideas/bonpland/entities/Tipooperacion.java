@@ -36,6 +36,6 @@ public class Tipooperacion implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoOperacion")
-    private List<Publicacion> publicacionList;
+    private List<Publicacion> publicacionList;//
     
 }

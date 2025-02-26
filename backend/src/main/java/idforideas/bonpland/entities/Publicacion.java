@@ -73,6 +73,6 @@ public class Publicacion implements Serializable {
     private Tipooperacion tipoOperacion;
     @JoinColumn(name = "usuario", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Usuario usuario;
+    private Usuario usuario;//
     
 }

@@ -88,6 +88,6 @@ public class Inmueble implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inmueble")
     private List<Publicacion> publicacionList;
 
-    
+    //
     
 }

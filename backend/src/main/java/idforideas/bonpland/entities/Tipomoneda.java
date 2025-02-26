@@ -33,6 +33,6 @@ public class Tipomoneda implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoMoneda")
-    private List<Publicacion> publicacionList;
+    private List<Publicacion> publicacionList;//
     
 }

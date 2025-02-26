@@ -46,7 +46,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "apellido")
+    @Column(name = "apellido")//
     private String apellido;
     @Basic(optional = false)
     @NotNull

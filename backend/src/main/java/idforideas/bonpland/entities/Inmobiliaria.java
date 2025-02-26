@@ -55,7 +55,7 @@ public class Inmobiliaria implements Serializable {
     @Column(name = "cuit")
     private int cuit;
     @Basic(optional = false)
-    @NotNull
+    @NotNull //
     @Column(name = "telefono")
     private int telefono;
     @JoinColumn(name = "cFiscal", referencedColumnName = "id")

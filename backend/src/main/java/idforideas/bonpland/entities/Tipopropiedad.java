@@ -36,6 +36,6 @@ public class Tipopropiedad implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoPropiedad")
-    private List<Inmueble> inmuebleList;
+    private List<Inmueble> inmuebleList;//
     
 }
