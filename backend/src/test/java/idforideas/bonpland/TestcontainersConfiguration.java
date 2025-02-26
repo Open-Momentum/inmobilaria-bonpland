@@ -13,7 +13,7 @@ class TestcontainersConfiguration {
 				new MySQLContainer<>("mysql:8.0.33")
 						.withUsername("test")
 						.withPassword("test")
-						.withDatabaseName("test");
+						.withDatabaseName("bonpland");
 
 			static {
 				mysqlContainer.start();
