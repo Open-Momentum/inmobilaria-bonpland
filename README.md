@@ -9,17 +9,17 @@ Brego thirsty prey farthest stroke pantry lot. Wilds dinner plant cheated! Last 
 <table align="center">
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/116227485?v=4" width="100"></td>
-    <td align="center"><img src="" width="100"></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/139514766?v=4" width="100"></td>
     <td align="center"><img src="" width="100"></td>
   </tr>
   <tr>
     <td align="center"><strong>Martina A.</strong></td>
-    <td align="center"><strong>Nombre A.</strong></td>
+    <td align="center"><strong>Diego G.</strong></td>
     <td align="center"><strong>Nombre M.</strong></td>
   </tr>
   <tr>
     <td align="center">Back-End</td>
-    <td align="center">Back-End</td>
+    <td align="center">Front-End</td>
     <td align="center">UX/UI</td>
   </tr>
   <tr>
@@ -32,10 +32,10 @@ Brego thirsty prey farthest stroke pantry lot. Wilds dinner plant cheated! Last 
       </a>
     </td>
     <td align="center">
-      <a href="">
+      <a href="https://www.linkedin.com/in/diegogarciascannapieco/">
         <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="LinkedIn">
       </a>
-      <a href="">
+      <a href="https://github.com/scannapieco">
         <img src="https://img.shields.io/badge/GitHub-171515?style=for-the-badge&logo=GitHub&logoColor=white" alt="GitHub">
       </a>
     </td>
