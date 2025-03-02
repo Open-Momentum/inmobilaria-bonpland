@@ -1,18 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package idforideas.bonpland.entities;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -46,7 +41,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "apellido")//
+    @Column(name = "apellido")
     private String apellido;
     @Basic(optional = false)
     @NotNull
@@ -64,15 +59,17 @@ public class Usuario implements Serializable {
     private int telefono;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "rol")
+    @Enumerated
+    private String rol;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "cFiscal")
+    @Enumerated
     private long cFiscal;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
-    private List<Inmobiliaria> inmobiliariaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Inmueble> inmuebleList;
-    @JoinColumn(name = "rol", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
-    private Rol rol;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Publicacion> publicacionList;
     

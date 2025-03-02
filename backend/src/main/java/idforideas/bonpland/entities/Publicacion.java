@@ -7,6 +7,7 @@ package idforideas.bonpland.entities;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -59,20 +60,29 @@ public class Publicacion implements Serializable {
     @NotNull
     @Column(name = "precio")
     private double precio;
-    @JoinColumn(name = "estado", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
-    private Estado estado;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "estado")
+    @Enumerated
+    private String estado;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "tipoMoneda")
+    @Enumerated
+    private String tipoMoneda;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "tipoOperacion")
+    @Enumerated
+    private String tipoOperacion;
     @JoinColumn(name = "inmueble", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Inmueble inmueble;
-    @JoinColumn(name = "tipoMoneda", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
-    private Tipomoneda tipoMoneda;
-    @JoinColumn(name = "tipoOperacion", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
-    private Tipooperacion tipoOperacion;
     @JoinColumn(name = "usuario", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Usuario usuario;//
+    private Usuario usuario;
     
 }

@@ -1,17 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package idforideas.bonpland.entities;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -55,14 +51,19 @@ public class Inmobiliaria implements Serializable {
     @Column(name = "cuit")
     private int cuit;
     @Basic(optional = false)
-    @NotNull //
+    @NotNull
     @Column(name = "telefono")
     private int telefono;
-    @JoinColumn(name = "cFiscal", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Condicionfiscal cFiscal;
-    @JoinColumn(name = "usuario", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario usuario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "cFiscal")
+    @Enumerated
+    private String cFiscal;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "usuario")
+    private String usuario;
     
 }

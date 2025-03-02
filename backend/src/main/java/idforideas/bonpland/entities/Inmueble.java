@@ -8,6 +8,7 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -76,18 +77,18 @@ public class Inmueble implements Serializable {
     @NotNull
     @Column(name = "metrosCuadrados")
     private double metrosCuadrados;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "tipoPropiedad")
+    @Enumerated
+    private String tipoPropiedad;
     @JoinColumn(name = "fotos", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Foto fotos;
-    @JoinColumn(name = "tipoPropiedad", referencedColumnName = "nombre")
-    @ManyToOne(optional = false)
-    private Tipopropiedad tipoPropiedad;
     @JoinColumn(name = "usuario", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inmueble")
     private List<Publicacion> publicacionList;
-
-    //
-    
 }

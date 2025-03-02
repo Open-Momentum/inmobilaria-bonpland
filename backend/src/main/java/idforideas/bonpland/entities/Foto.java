@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package idforideas.bonpland.entities;
 
 import jakarta.persistence.Basic;
@@ -34,7 +31,7 @@ public class Foto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")//
+    @Column(name = "id")
     private Long id;
     @Basic(optional = false)
     @NotNull
@@ -43,5 +40,5 @@ public class Foto implements Serializable {
     private String url;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fotos")
     private List<Inmueble> inmuebleList;
-
+    
 }
