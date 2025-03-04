@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +31,7 @@ public class Foto implements Serializable {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne
+    @ManyToOne //obligatorio
     @JoinColumn(name = "inmueble_id", referencedColumnName = "id")
     private Inmueble inmueble;
 
