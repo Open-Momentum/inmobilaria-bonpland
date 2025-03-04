@@ -1,29 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS bonpland;
 USE bonpland;
 
-CREATE TABLE `condicionfiscal` (
-  `id` bigint(20) NOT NULL,
-  `cFiscal` int(11) NOT NULL,
-  `nombre` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `estado`
---
-
-CREATE TABLE `estado` (
-  `nombre` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `foto`
 --
 
-CREATE TABLE `foto` (
+CREATE TABLE `fotos` (
   `id` bigint(20) NOT NULL,
   `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -34,15 +18,14 @@ CREATE TABLE `foto` (
 -- Estructura de tabla para la tabla `inmobiliaria`
 --
 
-CREATE TABLE `inmobiliaria` (
+CREATE TABLE `inmobiliarias` (
   `id` bigint(20) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `mail` varchar(80) NOT NULL,
-  `razonSocial` varchar(20) NOT NULL,
+  `razon_social` varchar(20) NOT NULL,
   `cuit` int(11) NOT NULL,
   `telefono` int(11) NOT NULL,
-  `cFiscal` bigint(20) NOT NULL,
-  `usuario` bigint(20) NOT NULL
+  `c_fiscal` varchar(20) NOT NULL,
+  `usuario_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -51,20 +34,19 @@ CREATE TABLE `inmobiliaria` (
 -- Estructura de tabla para la tabla `inmueble`
 --
 
-CREATE TABLE `inmueble` (
+CREATE TABLE `inmuebles` (
   `id` bigint(20) NOT NULL,
   `descripcion` varchar(500) NOT NULL,
   `codigo` int(11) NOT NULL,
   `direccion` varchar(500) NOT NULL,
-  `codigoPostal` int(11) NOT NULL,
-  `cantAmbientes` int(11) NOT NULL,
-  `cantDormi` int(11) NOT NULL,
-  `cantBanos` int(11) NOT NULL,
-  `cantCochera` int(11) NOT NULL,
-  `metrosCuadrados` double NOT NULL,
-  `fotos` bigint(20) NOT NULL,
-  `usuario` bigint(20) NOT NULL,
-  `tipoPropiedad` varchar(20) NOT NULL
+  `codigo_postal` int(11) NOT NULL,
+  `cant_ambientes` int(11) NOT NULL,
+  `cant_dormi` int(11) NOT NULL,
+  `cant_banos` int(11) NOT NULL,
+  `cant_cochera` int(11) NOT NULL,
+  `metros_cuadrados` double NOT NULL,
+  `usuario_id` bigint(20) NOT NULL,
+  `tipo_propiedad` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -73,17 +55,17 @@ CREATE TABLE `inmueble` (
 -- Estructura de tabla para la tabla `publicacion`
 --
 
-CREATE TABLE `publicacion` (
+CREATE TABLE `publicaciones` (
   `id` bigint(20) NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descripcion` text NOT NULL,
-  `fechaPublicacion` date NOT NULL,
+  `fecha_publicacion` date NOT NULL,
   `precio` double NOT NULL,
-  `inmueble` bigint(20) NOT NULL,
-  `usuario` bigint(20) NOT NULL,
+  `inmueble_id` bigint(20) NOT NULL,
+  `usuario_id` bigint(20) NOT NULL,
   `estado` varchar(20) NOT NULL,
-  `tipoMoneda` varchar(20) NOT NULL,
-  `tipoOperacion` varchar(20) NOT NULL
+  `tipo_moneda` varchar(20) NOT NULL,
+  `tipo_operacion` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -92,218 +74,130 @@ CREATE TABLE `publicacion` (
 -- Estructura de tabla para la tabla `rol`
 --
 
-CREATE TABLE `rol` (
+CREATE TABLE `roles` (
+  `id` bigint(20) NOT NULL,
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `tipomoneda`
---
 
-CREATE TABLE `tipomoneda` (
-  `nombre` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tipooperacion`
---
-
-CREATE TABLE `tipooperacion` (
-  `nombre` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tipopropiedad`
---
-
-CREATE TABLE `tipopropiedad` (
-  `nombre` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id` bigint(20) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `clave` varchar(20) NOT NULL,
-  `mail` varchar(60) NOT NULL,
+  `correo` varchar(60) NOT NULL,
   `telefono` int(11) NOT NULL,
-  `rol` varchar(20) NOT NULL,
-  `cFiscal` bigint(20) NOT NULL
+  `rol_id` bigint(20) NOT NULL,
+  `c_fiscal` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `condicionfiscal`
---
-ALTER TABLE `condicionfiscal`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_CondicionFiscal_nombre` (`nombre`);
-
---
--- Indices de la tabla `estado`
---
-ALTER TABLE `estado`
-  ADD PRIMARY KEY (`nombre`);
 
 --
 -- Indices de la tabla `foto`
 --
-ALTER TABLE `foto`
+ALTER TABLE `fotos`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `inmobiliaria`
 --
-ALTER TABLE `inmobiliaria`
+ALTER TABLE `inmobiliarias`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_Inmobiliaria_mail` (`mail`),
-  ADD UNIQUE KEY `uc_Inmobiliaria_razonSocial` (`razonSocial`),
-  ADD UNIQUE KEY `uc_Inmobiliaria_cuit` (`cuit`),
-  ADD UNIQUE KEY `uc_Inmobiliaria_telefono` (`telefono`),
-  ADD KEY `fk_Inmobiliaria_cFiscal` (`cFiscal`),
-  ADD KEY `fk_Inmobiliaria_usuario` (`usuario`);
+  ADD UNIQUE KEY `uc_inmobiliaria_razon_social` (`razon_social`),
+  ADD UNIQUE KEY `uc_inmobiliaria_cuit` (`cuit`),
+  ADD UNIQUE KEY `uc_inmobiliaria_telefono` (`telefono`),
+  ADD KEY `fk_inmobiliaria_usuario` (`usuario_id`);
 
 --
 -- Indices de la tabla `inmueble`
 --
-ALTER TABLE `inmueble`
+ALTER TABLE `inmuebles`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_Inmueble_codigo` (`codigo`),
-  ADD KEY `fk_Inmueble_fotos` (`fotos`),
-  ADD KEY `fk_Inmueble_usuario` (`usuario`),
-  ADD KEY `fk_Inmueble_tipoPropiedad` (`tipoPropiedad`);
+  ADD UNIQUE KEY `uc_Inmueble_codigo` (`codigo`);
 
 --
 -- Indices de la tabla `publicacion`
 --
-ALTER TABLE `publicacion`
+ALTER TABLE `publicaciones`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_Publicacion_inmueble` (`inmueble`),
-  ADD KEY `fk_Publicacion_usuario` (`usuario`),
-  ADD KEY `fk_Publicacion_estado` (`estado`),
-  ADD KEY `fk_Publicacion_tipoMoneda` (`tipoMoneda`),
-  ADD KEY `fk_Publicacion_tipoOperacion` (`tipoOperacion`);
+  ADD KEY `fk_publicacion_inmueble` (`inmueble_id`),
+  ADD KEY `fk_publicacion_usuario` (`usuario_id`),
+  ADD KEY `fk_publicacion_tipo_moneda` (`tipo_moneda`),
+  ADD KEY `fk_publicacion_tipo_operacion` (`tipo_operacion`);
 
 --
 -- Indices de la tabla `rol`
 --
-ALTER TABLE `rol`
-  ADD PRIMARY KEY (`nombre`);
+ALTER TABLE `roles`
+    ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `tipomoneda`
---
-ALTER TABLE `tipomoneda`
-  ADD PRIMARY KEY (`nombre`);
-
---
--- Indices de la tabla `tipooperacion`
---
-ALTER TABLE `tipooperacion`
-  ADD PRIMARY KEY (`nombre`);
-
---
--- Indices de la tabla `tipopropiedad`
---
-ALTER TABLE `tipopropiedad`
-  ADD PRIMARY KEY (`nombre`);
 
 --
 -- Indices de la tabla `usuario`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_Usuario_mail` (`mail`),
-  ADD KEY `fk_Usuario_rol` (`rol`);
+  ADD UNIQUE KEY `uc_usuario_correo` (`correo`),
+  ADD KEY `fk_usuario_rol` (`rol_id`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `condicionfiscal`
---
-ALTER TABLE `condicionfiscal`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `foto`
 --
-ALTER TABLE `foto`
+ALTER TABLE `fotos`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inmobiliaria`
 --
-ALTER TABLE `inmobiliaria`
+ALTER TABLE `inmobiliarias`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
-ALTER TABLE `inmueble`
+ALTER TABLE `inmuebles`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `publicacion`
 --
-ALTER TABLE `publicacion`
+ALTER TABLE `publicaciones`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
---
--- Restricciones para tablas volcadas
---
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Filtros para la tabla `inmobiliaria`
 --
-ALTER TABLE `inmobiliaria`
-  ADD CONSTRAINT `fk_Inmobiliaria_cFiscal` FOREIGN KEY (`cFiscal`) REFERENCES `condicionfiscal` (`id`),
-  ADD CONSTRAINT `fk_Inmobiliaria_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
+ALTER TABLE `inmobiliarias`
+  ADD CONSTRAINT `fk_inmobiliaria_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
 -- Filtros para la tabla `inmueble`
 --
-ALTER TABLE `inmueble`
-  ADD CONSTRAINT `fk_Inmueble_fotos` FOREIGN KEY (`fotos`) REFERENCES `foto` (`id`),
-  ADD CONSTRAINT `fk_Inmueble_tipoPropiedad` FOREIGN KEY (`tipoPropiedad`) REFERENCES `tipopropiedad` (`nombre`),
-  ADD CONSTRAINT `fk_Inmueble_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
+ALTER TABLE `inmuebles`
+  ADD CONSTRAINT `fk_inmueble_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
 -- Filtros para la tabla `publicacion`
 --
-ALTER TABLE `publicacion`
-  ADD CONSTRAINT `fk_Publicacion_estado` FOREIGN KEY (`estado`) REFERENCES `estado` (`nombre`),
-  ADD CONSTRAINT `fk_Publicacion_inmueble` FOREIGN KEY (`inmueble`) REFERENCES `inmueble` (`id`),
-  ADD CONSTRAINT `fk_Publicacion_tipoMoneda` FOREIGN KEY (`tipoMoneda`) REFERENCES `tipomoneda` (`nombre`),
-  ADD CONSTRAINT `fk_Publicacion_tipoOperacion` FOREIGN KEY (`tipoOperacion`) REFERENCES `tipooperacion` (`nombre`),
-  ADD CONSTRAINT `fk_Publicacion_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
+ALTER TABLE `publicaciones`
+  ADD CONSTRAINT `fk_publicacion_inmueble` FOREIGN KEY (`inmueble_id`) REFERENCES `inmuebles` (`id`),
+  ADD CONSTRAINT `fk_publicacion_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
 -- Filtros para la tabla `usuario`
 --
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `fk_Usuario_rol` FOREIGN KEY (`rol`) REFERENCES `rol` (`nombre`);
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`);
 COMMIT;
 

@@ -1,23 +1,18 @@
-
 package idforideas.bonpland.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- *
- * @author Martina
- */
+import java.io.Serializable;
+
 @Entity
-@Table(name = "fotos")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
-public class Foto implements Serializable {
+public class Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -28,12 +23,8 @@ public class Foto implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "url")
-    private String url;
-
-    @ManyToOne
-    @JoinColumn(name = "inmueble_id", referencedColumnName = "id")
-    private Inmueble inmueble;
+    @Size(min = 1, max = 50)
+    @Column(name = "nombre")
+    private String nombre;
 
 }

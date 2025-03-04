@@ -1,14 +1,8 @@
 
 package idforideas.bonpland.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import idforideas.bonpland.enumerations.CondicionFiscal;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
@@ -31,39 +25,38 @@ public class Inmobiliaria implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
+
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 80)
-    @Column(name = "mail")
-    private String mail;
+    @Column(name = "correo")
+    private String correo;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "razonSocial")
+    @Column(name = "razon_social")
     private String razonSocial;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cuit")
     private int cuit;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "telefono")
     private int telefono;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
-    @Column(name = "cFiscal")
-    @Enumerated
-    private String cFiscal;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "usuario")
-    private String usuario;
+    @Column(name = "c_fiscal")
+    @Enumerated(EnumType.STRING)
+    private CondicionFiscal cFiscal;
+
+    @OneToOne
+    private Usuario usuario;
     
 }

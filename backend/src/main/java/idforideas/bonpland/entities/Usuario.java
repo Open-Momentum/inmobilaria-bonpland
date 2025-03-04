@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  * @author Martina
  */
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 @Data
 @NoArgsConstructor
 public class Usuario implements Serializable {
@@ -33,41 +33,43 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "apellido")
     private String apellido;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "clave")
     private String clave;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
-    @Column(name = "mail")
-    private String mail;
+    @Column(name = "correo")
+    private String correo;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "telefono")
     private int telefono;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "rol")
-    @Enumerated
-    private String rol;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cFiscal")
-    @Enumerated
-    private long cFiscal;
+    @Column(name = "rol_id")
+    private Rol rol;
+
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Inmueble> inmuebleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
