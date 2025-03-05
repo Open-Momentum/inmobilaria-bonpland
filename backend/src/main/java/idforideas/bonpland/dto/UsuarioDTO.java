@@ -1,5 +1,5 @@
 
-package idforideas.bonpland.dto.request;
+package idforideas.bonpland.dto;
 
 /**
  *
