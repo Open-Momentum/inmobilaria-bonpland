@@ -1,15 +1,6 @@
 package idforideas.bonpland.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
@@ -35,38 +26,38 @@ public class Usuario implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotNull(message = "El nombre no debe ser nulo")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Column(name = "nombre")
     private String nombre;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @NotNull(message = "El apellido no debe ser nulo")
+    @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
     @Column(name = "apellido")
     private String apellido;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @NotNull(message = "La clave no debe ser nula")
+    @Size(min = 8, max = 20,message = "La clave debe tener entre 8 y 20 caracteres")
     @Column(name = "clave")
     private String clave;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 60)
+    @NotNull(message = "El correo no debe ser nulo")
+    //TODO regex de correo valido
     @Column(name = "correo")
     private String correo;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "El telefono no debe ser nulo")
     @Column(name = "telefono")
-    private int telefono;
+    private String telefono;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "rol_id")
+    @NotNull(message = "El rol no debe ser nulo")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
 
