@@ -42,19 +42,19 @@ public class Usuario implements Serializable {
     private String apellido;
 
     @Basic(optional = false)
-    @NotNull(message = "La clave no debe ser nula")
+    @NotBlank(message = "La clave no debe ser nula")
     @Size(min = 8, max = 20,message = "La clave debe tener entre 8 y 20 caracteres")
     @Column(name = "clave")
     private String clave;
 
     @Basic(optional = false)
-    @NotNull(message = "El correo no debe ser nulo")
+    @NotBlank(message = "El correo no debe ser nulo")
     //TODO regex de correo valido
     @Column(name = "correo")
     private String correo;
 
     @Basic(optional = false)
-    @NotNull(message = "El telefono no debe ser nulo")
+    @NotBlank(message = "El telefono no debe ser nulo")
     @Column(name = "telefono")
     private String telefono;
 

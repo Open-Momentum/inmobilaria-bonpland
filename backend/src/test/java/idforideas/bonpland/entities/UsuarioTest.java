@@ -6,6 +6,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UsuarioTest {
     private Usuario usuario;
     private static Validator validator;
-    private ValidatorFactory validatorFactory;
     private Set<ConstraintViolation<Usuario>> violaciones;
 
 
@@ -40,12 +40,13 @@ class UsuarioTest {
         usuario.setRol(new Rol());
     }
 
+
     @ParameterizedTest
     @ValueSource(strings = {"A", "nombreLargoDeMasDeCincuentaCaracteresAAABBBAAABBBAAA"})
     void deberiaValidarCampo_cuandoLongitudEsInvalida(String input) {
         //WHEN
-        validarCampo(input,"setNombre");
-        validarCampo(input,"setApellido");
+        validarCampo(input, "setNombre");
+        validarCampo(input, "setApellido");
 
         //THEN
         assertViolaciones("El nombre debe tener entre 2 y 50 caracteres");
@@ -54,27 +55,34 @@ class UsuarioTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    void deberiaValidarCampo_cuandoEsNulo(String input) {
+    void deberiaValidarCampo_cuandoEsNuloOVacio(String input) {
         //WHEN
-        validarCampo(input,"setNombre");
-        validarCampo(input,"setApellido");
+        validarCampo(input, "setNombre");
+        validarCampo(input, "setApellido");
+        validarCampo(input, "setClave");
+        validarCampo(input, "setCorreo");
+        validarCampo(input, "setTelefono");
 
         //THEN
         assertViolaciones("El nombre no debe ser nulo ni estar vacio");
         assertViolaciones("El apellido no debe ser nulo ni estar vacio");
+        assertViolaciones("La clave no debe ser nula");
+        assertViolaciones("El correo no debe ser nulo");
+        assertViolaciones("El telefono no debe ser nulo");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"|@#John", "jo\\@#~½¬{", "..-", ".john"})
     void deberiaValidarCampo_cuandoTieneCaracteresEspeciales(String input) {
         //WHEN
-        validarCampo(input,"setNombre");
-        validarCampo(input,"setApellido");
+        validarCampo(input, "setNombre");
+        validarCampo(input, "setApellido");
 
         //THEN
         assertViolaciones("El nombre no puede contener caracteres especiales");
         assertViolaciones("El apellido no puede contener caracteres especiales");
     }
+
 
     private void validarCampo(String input, String setter) {
         try {
