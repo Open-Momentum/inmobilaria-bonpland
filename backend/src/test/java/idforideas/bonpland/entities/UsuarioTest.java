@@ -4,24 +4,23 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import jakarta.validation.constraints.NotBlank;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioTest {
-    Usuario usuario;
-    static Validator validator;
-    ValidatorFactory validatorFactory;
+    private Usuario usuario;
+    private static Validator validator;
+    private ValidatorFactory validatorFactory;
+    private Set<ConstraintViolation<Usuario>> violaciones;
 
 
     @BeforeAll
@@ -43,34 +42,50 @@ class UsuarioTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"A", "nombreLargoDeMasDeCincuentaCaracteresAAABBBAAABBBAAA"})
-    void deberiaValidarNombre_cuandoLongitudEsInvalida(String input) {
+    void deberiaValidarCampo_cuandoLongitudEsInvalida(String input) {
         //WHEN
-        usuario.setNombre(input);
-        Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
+        validarCampo(input,"setNombre");
+
         //THEN
-        assertFalse(violaciones.isEmpty());
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre debe tener entre 2 y 50 caracteres")));
+        assertViolaciones("El nombre debe tener entre 2 y 50 caracteres");
     }
 
     @ParameterizedTest
     @NullAndEmptySource
-    void deberiaValidarNombre_cuandoEsNulo(String input) {
+    void deberiaValidarCampo_cuandoEsNulo(String input) {
         //WHEN
-        usuario.setNombre(input);
-        Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
+        validarCampo(input,"setNombre");
+
         //THEN
-        assertFalse(violaciones.isEmpty());
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre no debe ser nulo ni estar vacio")));
+        assertViolaciones("El nombre no debe ser nulo ni estar vacio");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"|@#John", "jo\\@#~½¬{", "..-", ".john"})
-    void deberiaValidarNombre_cuandoTieneCaracteresEspeciales(String input){
+    void deberiaValidarCampo_cuandoTieneCaracteresEspeciales(String input) {
         //WHEN
-        usuario.setNombre(input);
-        Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
+        validarCampo(input,"setNombre");
+
         //THEN
         assertFalse(violaciones.isEmpty());
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre no puede contener caracteres especiales")));
+        assertViolaciones("El nombre no puede contener caracteres especiales");
+    }
+
+    private void validarCampo(String input, String setter) {
+        try {
+            Method method = Usuario.class.getMethod(setter, String.class);
+            method.invoke(usuario, input);
+
+            violaciones = validator.validate(usuario);
+        } catch (NoSuchMethodException |
+                 IllegalAccessException |
+                 InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void assertViolaciones(String expectedMessage) {
+        assertFalse(violaciones.isEmpty());
+        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals(expectedMessage)));
     }
 }
