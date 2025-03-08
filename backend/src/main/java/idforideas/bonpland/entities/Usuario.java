@@ -35,8 +35,9 @@ public class Usuario implements Serializable {
     private String nombre;
 
     @Basic(optional = false)
-    @NotNull(message = "El apellido no debe ser nulo")
+    @NotBlank(message = "El apellido no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
+    @Pattern(regexp = "^[a-zA-Z]$",message = "El apellido no puede contener caracteres especiales")
     @Column(name = "apellido")
     private String apellido;
 

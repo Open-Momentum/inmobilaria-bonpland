@@ -45,9 +45,11 @@ class UsuarioTest {
     void deberiaValidarCampo_cuandoLongitudEsInvalida(String input) {
         //WHEN
         validarCampo(input,"setNombre");
+        validarCampo(input,"setApellido");
 
         //THEN
         assertViolaciones("El nombre debe tener entre 2 y 50 caracteres");
+        assertViolaciones("El apellido debe tener entre 2 y 50 caracteres");
     }
 
     @ParameterizedTest
@@ -55,9 +57,11 @@ class UsuarioTest {
     void deberiaValidarCampo_cuandoEsNulo(String input) {
         //WHEN
         validarCampo(input,"setNombre");
+        validarCampo(input,"setApellido");
 
         //THEN
         assertViolaciones("El nombre no debe ser nulo ni estar vacio");
+        assertViolaciones("El apellido no debe ser nulo ni estar vacio");
     }
 
     @ParameterizedTest
@@ -65,10 +69,11 @@ class UsuarioTest {
     void deberiaValidarCampo_cuandoTieneCaracteresEspeciales(String input) {
         //WHEN
         validarCampo(input,"setNombre");
+        validarCampo(input,"setApellido");
 
         //THEN
-        assertFalse(violaciones.isEmpty());
         assertViolaciones("El nombre no puede contener caracteres especiales");
+        assertViolaciones("El apellido no puede contener caracteres especiales");
     }
 
     private void validarCampo(String input, String setter) {
