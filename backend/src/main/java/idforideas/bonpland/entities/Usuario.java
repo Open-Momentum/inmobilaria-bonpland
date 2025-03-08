@@ -3,6 +3,7 @@ package idforideas.bonpland.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -30,6 +31,7 @@ public class Usuario implements Serializable {
     @NotBlank(message = "El nombre no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Column(name = "nombre")
+    @Pattern(regexp = "^[a-zA-Z]$",message = "El nombre no puede contener caracteres especiales")
     private String nombre;
 
     @Basic(optional = false)

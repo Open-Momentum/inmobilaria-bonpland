@@ -42,39 +42,35 @@ class UsuarioTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"A", "nombreLargoDeMasDe50Caracteres123123123123123123123"})
+    @ValueSource(strings = {"A", "nombreLargoDeMasDeCincuentaCaracteresAAABBBAAABBBAAA"})
     void deberiaValidarNombre_cuandoLongitudEsInvalida(String input) {
         //WHEN
         usuario.setNombre(input);
         Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
         //THEN
         assertFalse(violaciones.isEmpty());
-        assertEquals(1, violaciones.size());
-        assertEquals("El nombre debe tener entre 2 y 50 caracteres", violaciones.iterator().next().getMessage());
+        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre debe tener entre 2 y 50 caracteres")));
     }
 
     @ParameterizedTest
-    @NullSource
+    @NullAndEmptySource
     void deberiaValidarNombre_cuandoEsNulo(String input) {
         //WHEN
         usuario.setNombre(input);
         Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
         //THEN
         assertFalse(violaciones.isEmpty());
-        assertEquals(1, violaciones.size());
-        assertEquals("El nombre no debe ser nulo ni estar vacio", violaciones.iterator().next().getMessage());
+        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre no debe ser nulo ni estar vacio")));
     }
 
     @ParameterizedTest
-    @EmptySource
-    void deberiaValidarNombre_cuandoEstaVacio(String input) {
+    @ValueSource(strings = {"|@#John", "jo\\@#~½¬{", "..-", ".john"})
+    void deberiaValidarNombre_cuandoTieneCaracteresEspeciales(String input){
         //WHEN
         usuario.setNombre(input);
         Set<ConstraintViolation<Usuario>> violaciones = validator.validate(usuario);
         //THEN
         assertFalse(violaciones.isEmpty());
-        assertEquals(2, violaciones.size());
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre no debe ser nulo ni estar vacio")));
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre debe tener entre 2 y 50 caracteres")));
+        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals("El nombre no puede contener caracteres especiales")));
     }
 }
