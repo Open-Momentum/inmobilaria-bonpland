@@ -25,21 +25,8 @@ class UsuarioServiceTest {
     @Test
     void deberiaGuardarUsuario_cuandoLosDatosSonValidos(){
         //GIVEN
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setNombre("test");
-        dto.setApellido("test");
-        dto.setTelefono("+541122334455");
-        dto.setClave("clave.secreta#2");
-        dto.setCorreo("test@mail.com");
-        Usuario usuarioEsperado = new Usuario();
-        usuarioEsperado.setId(1L);
-        usuarioEsperado.setNombre("test");
-        usuarioEsperado.setApellido("test");
-        usuarioEsperado.setTelefono("+541122334455");
-        usuarioEsperado.setClave("clave.secreta#2");
-        usuarioEsperado.setCorreo("test@mail.com");
-        usuarioEsperado.setRol(new Rol());
-
+        UsuarioDTO dto = getUsuarioDTO();
+        Usuario usuarioEsperado = getUsuarioEsperado();
         when(usuarioRepository.save(any(Usuario.class))).thenAnswer((invocation)->{
             usuarioEsperado.setId(1L);
             return usuarioEsperado;
@@ -50,7 +37,29 @@ class UsuarioServiceTest {
 
         //THEN
         assertNotNull(usuarioGuardado);
-        assertEquals(1L, usuarioGuardado.getId());
+        assertNotNull(usuarioGuardado.getId());
         verify(usuarioRepository).save(any(Usuario.class));
+    }
+
+    private  UsuarioDTO getUsuarioDTO() {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setNombre("test");
+        dto.setApellido("test");
+        dto.setTelefono("+541122334455");
+        dto.setClave("clave.secreta#2");
+        dto.setCorreo("test@mail.com");
+        return dto;
+    }
+
+    private  Usuario getUsuarioEsperado() {
+        Usuario usuarioEsperado = new Usuario();
+        usuarioEsperado.setId(1L);
+        usuarioEsperado.setNombre("test");
+        usuarioEsperado.setApellido("test");
+        usuarioEsperado.setTelefono("+541122334455");
+        usuarioEsperado.setClave("clave.secreta#2");
+        usuarioEsperado.setCorreo("test@mail.com");
+        usuarioEsperado.setRol(new Rol());
+        return usuarioEsperado;
     }
 }

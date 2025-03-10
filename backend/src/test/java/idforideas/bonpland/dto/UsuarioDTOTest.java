@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Figueroa Mauro
  */
-class UsuarioDtoTest {
+class UsuarioDTOTest {
     private UsuarioDTO usuarioValido;
     private static Validator validator;
     private Set<ConstraintViolation<UsuarioDTO>> errores;
