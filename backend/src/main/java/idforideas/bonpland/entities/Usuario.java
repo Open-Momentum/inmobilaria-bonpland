@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,19 +33,21 @@ public class Usuario implements Serializable {
     @NotBlank(message = "El nombre no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Column(name = "nombre")
-    @Pattern(regexp = "^[a-zA-Z]$",message = "El nombre no puede contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z]*$",message = "El nombre no puede contener caracteres especiales")
     private String nombre;
 
     @Basic(optional = false)
     @NotBlank(message = "El apellido no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
-    @Pattern(regexp = "^[a-zA-Z]$",message = "El apellido no puede contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z]*$",message = "El apellido no puede contener caracteres especiales")
     @Column(name = "apellido")
     private String apellido;
 
     @Basic(optional = false)
     @NotBlank(message = "La clave no debe ser nula")
     @Size(min = 8, max = 20,message = "La clave debe tener entre 8 y 20 caracteres")
+    @Pattern(regexp = "^[A-Za-z0-9._\\-@#~&]+$",
+    message = "La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)")
     @Column(name = "clave")
     private String clave;
 
