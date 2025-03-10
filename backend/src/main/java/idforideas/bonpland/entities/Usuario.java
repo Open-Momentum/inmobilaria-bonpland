@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Usuario implements Serializable {
-    private final static String  CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\\\.[a-zA-Z0-9-]{2,}){1,4}$";
+    private final static String  CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
     private final static String  NOMBRE_PATTERN = "^[a-zA-Z]+( [a-zA-Z]+)*$";
     private final static String  CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
 
@@ -56,9 +56,8 @@ public class Usuario implements Serializable {
 
     @Basic(optional = false)
     @NotBlank(message = "El correo no debe ser nulo ni estar vacio")
-    //TODO regex de correo valido
     @Column(name = "correo")
-    @Pattern(regexp = CORREO_PATTERN)
+    @Pattern(regexp = CORREO_PATTERN,message = "Formato de correo invalido")
     private String correo;
 
     @Basic(optional = false)

@@ -93,13 +93,23 @@ class UsuarioTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"clave#con?si¿gnos!"})
+    @ValueSource(strings = {"clave#con?si¿gnos!","testExample=","{clavenueva}"})
     void deberiaValidarClave_cuandoTieneCaracteresInvalidos(String input){
         //WHEN
         validarCampo(input, "setClave");
 
         //THEN
         assertViolaciones("La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"mail@m.com","correo.com", "ejemplo@correo.com.ar.ar.ar.ar"})
+    void deberiaValidarCorreo_cuandoTieneFormatoInvalido(String input){
+        //WHEN
+        validarCampo(input, "setCorreo");
+
+        //THEN
+        assertViolaciones("Formato de correo invalido");
     }
 
 
