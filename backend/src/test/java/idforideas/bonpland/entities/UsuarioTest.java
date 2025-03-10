@@ -53,7 +53,7 @@ class UsuarioTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"A", "nombreLargoDeMasDeCincuentaCaracteresAAABBBAAABBBAAA"})
+    @ValueSource(strings = {"AAAAAAA", "nombreLargoDeMasDe20c"})
     void deberiaValidarCampo_cuandoLongitudEs8a20Caracteres(String input) {
         //WHEN
         validarCampo(input, "setClave");
@@ -75,9 +75,9 @@ class UsuarioTest {
         //THEN
         assertViolaciones("El nombre no debe ser nulo ni estar vacio");
         assertViolaciones("El apellido no debe ser nulo ni estar vacio");
-        assertViolaciones("La clave no debe ser nula");
-        assertViolaciones("El correo no debe ser nulo");
-        assertViolaciones("El telefono no debe ser nulo");
+        assertViolaciones("La clave no debe ser nula ni estar vacia");
+        assertViolaciones("El correo no debe ser nulo ni estar vacio");
+        assertViolaciones("El telefono no debe ser nulo ni estar vacio");
     }
 
     @ParameterizedTest
