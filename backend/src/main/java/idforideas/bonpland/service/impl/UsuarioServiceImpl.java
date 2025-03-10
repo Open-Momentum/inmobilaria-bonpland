@@ -11,6 +11,8 @@ import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 /**
  *
  * @author Figueroa Mauro
@@ -22,6 +24,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
+        Optional<Usuario> emailEncontrado = usuarioRepository.findByCorreo(dto.getCorreo());
+        if (emailEncontrado.isPresent()) {
+            throw new IllegalArgumentException("El correo ya existe");
+        }
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setApellido(dto.getApellido());
