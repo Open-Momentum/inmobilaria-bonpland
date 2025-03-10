@@ -3,10 +3,12 @@ package idforideas.bonpland.service;
 import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.repository.UsuarioRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 import idforideas.bonpland.service.impl.UsuarioServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -24,15 +26,21 @@ class UsuarioServiceTest {
     private UsuarioServiceImpl usuarioService;
     @Mock
     private UsuarioRepository usuarioRepository;
+    UsuarioDTO dto;
+    Usuario usuario;
+
+    @BeforeEach
+    void setUp() {
+        dto = getUsuarioDTO();
+        usuario = getUsuario();
+    }
 
     @Test
     void deberiaGuardarUsuario_cuandoLosDatosSonValidos(){
         //GIVEN
-        UsuarioDTO dto = getUsuarioDTO();
-        Usuario usuarioEsperado = getUsuario();
         when(usuarioRepository.save(any(Usuario.class))).thenAnswer((invocation)->{
-            usuarioEsperado.setId(1L);
-            return usuarioEsperado;
+            usuario.setId(1L);
+            return usuario;
         });
 
         //WHEN
@@ -47,15 +55,13 @@ class UsuarioServiceTest {
     @Test
     void deberiaLanzarExcepcionAlGuardarUsuario_cuandoElCorreoYaExiste(){
         //GIVEN
-        UsuarioDTO dto = getUsuarioDTO();
-        Usuario usuarioConEmailExistente = getUsuario();
-        when(usuarioRepository.findByCorreo(getUsuario().getCorreo())).thenReturn(Optional.of(usuarioConEmailExistente));
+        when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.of(usuario));
 
         //WHEN
         Executable executable = () -> usuarioService.guardarUsuario(dto);
 
         //THEN
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, executable);
+        CorreoExistenteException e = assertThrows(CorreoExistenteException.class, executable);
         assertEquals("El correo ya existe", e.getMessage());
 
     }

@@ -26,7 +26,7 @@ class UsuarioDTOTest {
     private Set<ConstraintViolation<UsuarioDTO>> errores;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
 

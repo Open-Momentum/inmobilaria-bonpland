@@ -7,6 +7,7 @@ package idforideas.bonpland.service.impl;
 import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario guardarUsuario(UsuarioDTO dto) {
         Optional<Usuario> emailEncontrado = usuarioRepository.findByCorreo(dto.getCorreo());
         if (emailEncontrado.isPresent()) {
-            throw new IllegalArgumentException("El correo ya existe");
+            throw new CorreoExistenteException("El correo ya existe");
         }
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
