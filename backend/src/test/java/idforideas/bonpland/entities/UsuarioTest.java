@@ -4,17 +4,13 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,7 +77,7 @@ class UsuarioTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"|@#John", "jo\\@#~½¬{", "..-", ".john"})
+    @ValueSource(strings = {"|@#John", "jo\\@#~½¬{", "..-", ".john","john  doe", " john doe "})
     void deberiaValidarCampo_cuandoTieneCaracteresEspeciales(String input) {
         //WHEN
         validarCampo(input, "setNombre");
@@ -110,6 +106,16 @@ class UsuarioTest {
 
         //THEN
         assertViolaciones("Formato de correo invalido");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1122334455","15-45336677","011-35671817","+54-01122334455"})
+    void deberiaValidarTelefono_cuandoTieneFormatoInvalido(String input){
+        //WHEN
+        validarCampo(input, "setTelefono");
+
+        //THEN
+        assertViolaciones("Formato de telefono invalido");
     }
 
 

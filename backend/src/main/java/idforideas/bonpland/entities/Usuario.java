@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +25,7 @@ public class Usuario implements Serializable {
     private final static String  CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
 
     private static final long serialVersionUID = 1L;
+    public static final String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,12}$";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -63,6 +63,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotBlank(message = "El telefono no debe ser nulo ni estar vacio")
     @Column(name = "telefono")
+    @Pattern(regexp = TELEFONO_PATTERN,message = "Formato de telefono invalido")
     private String telefono;
 
     @Basic(optional = false)
