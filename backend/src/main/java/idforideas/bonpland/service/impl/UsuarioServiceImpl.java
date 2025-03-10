@@ -4,10 +4,18 @@
  */
 package idforideas.bonpland.service.impl;
 
+import idforideas.bonpland.dto.UsuarioDTO;
+import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.service.UsuarioService;
+
 /**
  *
- * @author Martina
+ * @author Figueroa Mauro
  */
-public interface UsuarioServiceImpl {
-    
+public class UsuarioServiceImpl implements UsuarioService {
+
+    @Override
+    public Usuario guardarUsuario(UsuarioDTO dto) {
+        return null;
+    }
 }

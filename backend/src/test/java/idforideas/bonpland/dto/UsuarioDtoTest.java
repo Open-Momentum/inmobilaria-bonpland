@@ -1,4 +1,4 @@
-package idforideas.bonpland.entities;
+package idforideas.bonpland.dto;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -20,23 +20,22 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Figueroa Mauro
  */
-class UsuarioTest {
-    private Usuario usuarioValido;
+class UsuarioDtoTest {
+    private UsuarioDTO usuarioValido;
     private static Validator validator;
-    private Set<ConstraintViolation<Usuario>> errores;
+    private Set<ConstraintViolation<UsuarioDTO>> errores;
 
     @BeforeEach
     void init() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
 
-        usuarioValido = new Usuario();
+        usuarioValido = new UsuarioDTO();
         usuarioValido.setNombre("test");
         usuarioValido.setApellido("test");
         usuarioValido.setTelefono("+541122334455");
         usuarioValido.setClave("clave.secreta#2");
         usuarioValido.setCorreo("test@mail.com");
-        usuarioValido.setRol(new Rol());
         errores = null;
     }
 
@@ -82,11 +81,11 @@ class UsuarioTest {
         validarCampo(input, "setTelefono");
 
         //THEN
-        assertErrores("El nombre no debe ser nulo ni estar vacio");
-        assertErrores("El apellido no debe ser nulo ni estar vacio");
-        assertErrores("La clave no debe ser nula ni estar vacia");
-        assertErrores("El correo no debe ser nulo ni estar vacio");
-        assertErrores("El telefono no debe ser nulo ni estar vacio");
+        assertErrores("El nombre no debe ser nulo ni estar vacío");
+        assertErrores("El apellido no debe ser nulo ni estar vacío");
+        assertErrores("La clave no debe ser nula ni estar vacía");
+        assertErrores("El correo no debe ser nulo ni estar vacío");
+        assertErrores("El teléfono no debe ser nulo ni estar vacío");
     }
 
     @ParameterizedTest
@@ -108,7 +107,7 @@ class UsuarioTest {
         validarCampo(input, "setClave");
 
         //THEN
-        assertErrores("La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)");
+        assertErrores("La clave solo acepta letras, números y los siguientes caracteres especiales (.-_@#~&)");
     }
 
     @ParameterizedTest
@@ -118,7 +117,7 @@ class UsuarioTest {
         validarCampo(input, "setCorreo");
 
         //THEN
-        assertErrores("Formato de correo invalido");
+        assertErrores("Formato de correo inválido");
     }
 
     @ParameterizedTest
@@ -128,13 +127,12 @@ class UsuarioTest {
         validarCampo(input, "setTelefono");
 
         //THEN
-        assertErrores("Formato de telefono invalido");
+        assertErrores("Formato de teléfono inválido");
     }
-
 
     private void validarCampo(String input, String setter) {
         try {
-            Method method = Usuario.class.getMethod(setter, String.class);
+            Method method = UsuarioDTO.class.getMethod(setter, String.class);
             method.invoke(usuarioValido, input);
 
             errores = validator.validate(usuarioValido);
