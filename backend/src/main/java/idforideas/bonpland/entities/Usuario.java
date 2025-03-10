@@ -39,14 +39,14 @@ public class Usuario implements Serializable {
     @NotBlank(message = "El nombre no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Pattern(regexp = NOMBRE_PATTERN,message = "El nombre no puede contener caracteres especiales")
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
     @Basic(optional = false)
     @NotBlank(message = "El apellido no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
     @Pattern(regexp = NOMBRE_PATTERN,message = "El apellido no puede contener caracteres especiales")
-    @Column(name = "apellido")
+    @Column(name = "apellido",nullable = false)
     private String apellido;
 
     @Basic(optional = false)
@@ -54,19 +54,19 @@ public class Usuario implements Serializable {
     @Size(min = 8, max = 20,message = "La clave debe tener entre 8 y 20 caracteres")
     @Pattern(regexp = CLAVE_PATTERN,
     message = "La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)")
-    @Column(name = "clave")
+    @Column(name = "clave",nullable = false)
     private String clave;
 
     @Basic(optional = false)
     @NotBlank(message = "El correo no debe ser nulo ni estar vacio")
     @Pattern(regexp = CORREO_PATTERN,message = "Formato de correo invalido")
-    @Column(name = "correo")
+    @Column(name = "correo",nullable = false)
     private String correo;
 
     @Basic(optional = false)
     @NotBlank(message = "El telefono no debe ser nulo ni estar vacio")
     @Pattern(regexp = TELEFONO_PATTERN,message = "Formato de telefono invalido")
-    @Column(name = "telefono")
+    @Column(name = "telefono",nullable = false)
     private String telefono;
 
     @Basic(optional = false)

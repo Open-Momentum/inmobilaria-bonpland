@@ -13,13 +13,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  *
  * @author Figueroa Mauro
  */
-import static org.junit.jupiter.api.Assertions.*;
-
 class UsuarioTest {
     private Usuario usuarioValido;
     private static Validator validator;
@@ -57,8 +57,8 @@ class UsuarioTest {
         validarCampo(input, "setApellido");
 
         //THEN
-        assertViolaciones("El nombre debe tener entre 2 y 50 caracteres");
-        assertViolaciones("El apellido debe tener entre 2 y 50 caracteres");
+        assertErrores("El nombre debe tener entre 2 y 50 caracteres");
+        assertErrores("El apellido debe tener entre 2 y 50 caracteres");
     }
 
     @ParameterizedTest
@@ -68,7 +68,7 @@ class UsuarioTest {
         validarCampo(input, "setClave");
 
         //THEN
-        assertViolaciones("La clave debe tener entre 8 y 20 caracteres");
+        assertErrores("La clave debe tener entre 8 y 20 caracteres");
     }
 
     @ParameterizedTest
@@ -82,11 +82,11 @@ class UsuarioTest {
         validarCampo(input, "setTelefono");
 
         //THEN
-        assertViolaciones("El nombre no debe ser nulo ni estar vacio");
-        assertViolaciones("El apellido no debe ser nulo ni estar vacio");
-        assertViolaciones("La clave no debe ser nula ni estar vacia");
-        assertViolaciones("El correo no debe ser nulo ni estar vacio");
-        assertViolaciones("El telefono no debe ser nulo ni estar vacio");
+        assertErrores("El nombre no debe ser nulo ni estar vacio");
+        assertErrores("El apellido no debe ser nulo ni estar vacio");
+        assertErrores("La clave no debe ser nula ni estar vacia");
+        assertErrores("El correo no debe ser nulo ni estar vacio");
+        assertErrores("El telefono no debe ser nulo ni estar vacio");
     }
 
     @ParameterizedTest
@@ -97,8 +97,8 @@ class UsuarioTest {
         validarCampo(input, "setApellido");
 
         //THEN
-        assertViolaciones("El nombre no puede contener caracteres especiales");
-        assertViolaciones("El apellido no puede contener caracteres especiales");
+        assertErrores("El nombre no puede contener caracteres especiales");
+        assertErrores("El apellido no puede contener caracteres especiales");
     }
 
     @ParameterizedTest
@@ -108,7 +108,7 @@ class UsuarioTest {
         validarCampo(input, "setClave");
 
         //THEN
-        assertViolaciones("La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)");
+        assertErrores("La clave solo acepta letras, numeros y los siguientes caracteres especiales (.-_@#~&)");
     }
 
     @ParameterizedTest
@@ -118,7 +118,7 @@ class UsuarioTest {
         validarCampo(input, "setCorreo");
 
         //THEN
-        assertViolaciones("Formato de correo invalido");
+        assertErrores("Formato de correo invalido");
     }
 
     @ParameterizedTest
@@ -128,7 +128,7 @@ class UsuarioTest {
         validarCampo(input, "setTelefono");
 
         //THEN
-        assertViolaciones("Formato de telefono invalido");
+        assertErrores("Formato de telefono invalido");
     }
 
 
@@ -145,7 +145,7 @@ class UsuarioTest {
         }
     }
 
-    private void assertViolaciones(String expectedMessage) {
+    private void assertErrores(String expectedMessage) {
         assertFalse(errores.isEmpty());
         assertTrue(errores.stream().anyMatch(v -> v.getMessage().equals(expectedMessage)));
     }

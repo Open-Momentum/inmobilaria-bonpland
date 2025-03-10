@@ -6,9 +6,6 @@ import org.testcontainers.containers.MySQLContainer;
 @TestConfiguration
 class TestcontainersConfiguration {
 
-
-
-
 		private static final MySQLContainer<?> mysqlContainer =
 				new MySQLContainer<>("mysql:8.0.33")
 						.withUsername("test")
