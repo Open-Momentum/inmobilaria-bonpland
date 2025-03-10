@@ -5,6 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,28 +14,40 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+/**
+ *
+ * @author Figueroa Mauro
+ */
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioTest {
-    private Usuario usuario;
+    private Usuario usuarioValido;
     private static Validator validator;
-    private Set<ConstraintViolation<Usuario>> violaciones;
+    private Set<ConstraintViolation<Usuario>> errores;
 
     @BeforeEach
     void init() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
 
-        usuario = new Usuario();
-        usuario.setNombre("test");
-        usuario.setApellido("test");
-        usuario.setTelefono("1122334455");
-        usuario.setClave("12a.asd3123123");
-        usuario.setCorreo("test@mail.com");
-        usuario.setRol(new Rol());
-        violaciones = null;
+        usuarioValido = new Usuario();
+        usuarioValido.setNombre("test");
+        usuarioValido.setApellido("test");
+        usuarioValido.setTelefono("+541122334455");
+        usuarioValido.setClave("clave.secreta#2");
+        usuarioValido.setCorreo("test@mail.com");
+        usuarioValido.setRol(new Rol());
+        errores = null;
     }
 
+    @Test
+    void DeberiaValidarUsuario_cuandoAtributosSonValidos(){
+        //WHEN
+        errores = validator.validate(usuarioValido);
+
+        //THEN
+        assertTrue(errores.isEmpty());
+    }
 
     @ParameterizedTest
     @ValueSource(strings = {"A", "nombreLargoDeMasDeCincuentaCaracteresAAABBBAAABBBAAA"})
@@ -122,9 +135,9 @@ class UsuarioTest {
     private void validarCampo(String input, String setter) {
         try {
             Method method = Usuario.class.getMethod(setter, String.class);
-            method.invoke(usuario, input);
+            method.invoke(usuarioValido, input);
 
-            violaciones = validator.validate(usuario);
+            errores = validator.validate(usuarioValido);
         } catch (NoSuchMethodException |
                  IllegalAccessException |
                  InvocationTargetException e) {
@@ -133,7 +146,7 @@ class UsuarioTest {
     }
 
     private void assertViolaciones(String expectedMessage) {
-        assertFalse(violaciones.isEmpty());
-        assertTrue(violaciones.stream().anyMatch(v -> v.getMessage().equals(expectedMessage)));
+        assertFalse(errores.isEmpty());
+        assertTrue(errores.stream().anyMatch(v -> v.getMessage().equals(expectedMessage)));
     }
 }

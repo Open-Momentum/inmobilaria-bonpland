@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,9 +25,10 @@ public class Usuario implements Serializable {
     private final static String  CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
     private final static String  NOMBRE_PATTERN = "^[a-zA-Z]+( [a-zA-Z]+)*$";
     private final static String  CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
+    private final static String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,12}$";
+    @Serial
+    private final static long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    public static final String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,12}$";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -35,8 +38,8 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotBlank(message = "El nombre no debe ser nulo ni estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
-    @Column(name = "nombre")
     @Pattern(regexp = NOMBRE_PATTERN,message = "El nombre no puede contener caracteres especiales")
+    @Column(name = "nombre")
     private String nombre;
 
     @Basic(optional = false)
@@ -56,14 +59,14 @@ public class Usuario implements Serializable {
 
     @Basic(optional = false)
     @NotBlank(message = "El correo no debe ser nulo ni estar vacio")
-    @Column(name = "correo")
     @Pattern(regexp = CORREO_PATTERN,message = "Formato de correo invalido")
+    @Column(name = "correo")
     private String correo;
 
     @Basic(optional = false)
     @NotBlank(message = "El telefono no debe ser nulo ni estar vacio")
-    @Column(name = "telefono")
     @Pattern(regexp = TELEFONO_PATTERN,message = "Formato de telefono invalido")
+    @Column(name = "telefono")
     private String telefono;
 
     @Basic(optional = false)
