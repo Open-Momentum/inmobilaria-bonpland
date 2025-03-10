@@ -3,6 +3,7 @@ package idforideas.bonpland.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Table(name = "roles")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
