@@ -21,7 +21,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -159,6 +164,25 @@ class UsuarioServiceTest {
         verify(usuarioRepository, never()).findById(anyLong());
     }
 
+    @Test
+    void deberiaListarUsuarios_conPaginacion(){
+        //GIVEN
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Usuario> usuarioList = List.of(getUsuario(), getUsuario(), getUsuario());
+        Page<Usuario> usuarioPage = new PageImpl<>(usuarioList, pageable, usuarioList.size());
+
+        when(usuarioRepository.findAll(any(Pageable.class))).thenReturn(usuarioPage);
+
+        //WHEN
+        Page<Usuario> result = usuarioService.listarUsuarios(pageable);
+
+        //THEN
+        assertEquals(3, result.getTotalElements());
+        assertEquals(1,result.getTotalPages());
+
+        verify(usuarioRepository).findAll(any(Pageable.class));
+    }
+
     private <T extends Exception> void assertThrowsWithMessage(Class<T> tClass, Executable executable, String message) {
         Exception e = assertThrowsExactly(tClass, executable);
         assertEquals(message, e.getMessage());
@@ -175,14 +199,14 @@ class UsuarioServiceTest {
     }
 
     private Usuario getUsuario() {
-        Usuario usuarioEsperado = new Usuario();
-        usuarioEsperado.setId(1L);
-        usuarioEsperado.setNombre("test");
-        usuarioEsperado.setApellido("test");
-        usuarioEsperado.setTelefono("+541122334455");
-        usuarioEsperado.setClave("clave.secreta#2");
-        usuarioEsperado.setCorreo("test@mail.com");
-        usuarioEsperado.setRol(new Rol(1L, "USUARIO"));
-        return usuarioEsperado;
+        Usuario usuarioValido = new Usuario();
+        usuarioValido.setId(1L);
+        usuarioValido.setNombre("test");
+        usuarioValido.setApellido("test");
+        usuarioValido.setTelefono("+541122334455");
+        usuarioValido.setClave("clave.secreta#2");
+        usuarioValido.setCorreo("test@mail.com");
+        usuarioValido.setRol(new Rol(1L, "USUARIO"));
+        return usuarioValido;
     }
 }
