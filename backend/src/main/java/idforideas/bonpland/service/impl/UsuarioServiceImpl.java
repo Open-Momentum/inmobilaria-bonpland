@@ -7,6 +7,7 @@ import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNotFoundException;
 import idforideas.bonpland.mapper.UsuarioMapper;
+import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
@@ -25,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private RolRepository rolRepository;
 
-    private final UsuarioMapper mapper = UsuarioMapper.INSTANCE;
+    private final UsuarioMapper mapper = new UsuarioMapperImpl();
 
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
