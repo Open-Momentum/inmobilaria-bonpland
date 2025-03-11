@@ -145,6 +145,18 @@ void deberiaActualizarUsuario(){
     verify(usuarioRepository).findById(anyLong());
 }
 
+@Test
+void deberiaLanzarExcepcion_cuandoElDtoTieneIdNulo(){
+    //WHEN
+    Executable executable = () -> usuarioService.actualizarUsuario(dto);
+
+    //THEN
+    IllegalArgumentException e = assertThrows(IllegalArgumentException.class, executable);
+    assertEquals("El id no puede ser nulo para actualizar el usuario", e.getMessage());
+    verify(usuarioRepository,never()).save(any(Usuario.class));
+    verify(usuarioRepository,never()).findById(anyLong());
+}
+
     private UsuarioDTO getUsuarioDTO() {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("test");

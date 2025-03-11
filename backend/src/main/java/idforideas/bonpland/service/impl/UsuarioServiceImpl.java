@@ -31,7 +31,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
         validarCorreo(dto.getCorreo());
-        Rol rolEncontrado = validarRol();
+        Rol rolEncontrado = validarRol("USUARIO");
 
         Usuario usuario = mapper.dtoAEntidad(dto);
         usuario.setRol(rolEncontrado);
@@ -43,6 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public Usuario actualizarUsuario(UsuarioDTO dto) {
+        validarIdNulo(dto);
         Usuario usuario = mapper.dtoAEntidad(dto);
         if (usuarioRepository.findById(dto.getId()).isPresent()) {
 
@@ -51,13 +52,19 @@ public class UsuarioServiceImpl implements UsuarioService {
         return null;
     }
 
+    private static void validarIdNulo(UsuarioDTO dto) {
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo para actualizar el usuario");
+        }
+    }
+
     private  Usuario validarUsuarioBuscado(Long id) {
         return usuarioRepository.findById(id)
                        .orElseThrow(()-> new UsuarioNotFoundException("Usuario no encontrado"));
     }
 
-    private Rol validarRol() {
-        return rolRepository.findByNombre("USUARIO")
+    private Rol validarRol(String nombre) {
+        return rolRepository.findByNombre(nombre)
                        .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado"));
     }
 
