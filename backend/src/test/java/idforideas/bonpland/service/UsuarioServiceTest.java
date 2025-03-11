@@ -4,6 +4,7 @@ import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,14 +21,21 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
+/**
+ *
+ * @author Figueroa Mauro
+ */
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
     @Mock
     private UsuarioRepository usuarioRepository;
-    UsuarioDTO dto;
-    Usuario usuario;
+    @Mock
+    private RolRepository rolRepository;
+
+    private UsuarioDTO dto;
+    private Usuario usuario;
 
     @BeforeEach
     void setUp() {
@@ -38,6 +46,7 @@ class UsuarioServiceTest {
     @Test
     void deberiaGuardarUsuario_cuandoLosDatosSonValidos(){
         //GIVEN
+        when(rolRepository.findByNombre("USUARIO")).thenReturn(Optional.of(new Rol(1L, "USUARIO")));
         when(usuarioRepository.save(any(Usuario.class))).thenAnswer((invocation)->{
             usuario.setId(1L);
             return usuario;
@@ -63,7 +72,21 @@ class UsuarioServiceTest {
         //THEN
         CorreoExistenteException e = assertThrows(CorreoExistenteException.class, executable);
         assertEquals("El correo ya existe", e.getMessage());
+        verify(usuarioRepository,never()).save(any(Usuario.class));
+    }
 
+    @Test
+    void deberiaAsignarRolUsuarioPorDefecto_cuandoSeGuardaUnUsuario(){
+        //GIVEN
+        when(rolRepository.findByNombre("USUARIO")).thenReturn(Optional.of(new Rol(1L, "USUARIO")));
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
+
+        //WHEN
+        Usuario usuarioGuardado = usuarioService.guardarUsuario(dto);
+
+        //THEN
+        assertEquals("USUARIO", usuarioGuardado.getRol().getNombre());
+        verify(usuarioRepository).save(any(Usuario.class));
     }
 
     private  UsuarioDTO getUsuarioDTO() {
@@ -84,7 +107,7 @@ class UsuarioServiceTest {
         usuarioEsperado.setTelefono("+541122334455");
         usuarioEsperado.setClave("clave.secreta#2");
         usuarioEsperado.setCorreo("test@mail.com");
-        usuarioEsperado.setRol(new Rol());
+        usuarioEsperado.setRol(new Rol(1L,"USUARIO"));
         return usuarioEsperado;
     }
 }
