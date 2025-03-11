@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  *
- * @author Martina
+ * @author Figueroa Mauro
  */
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{

@@ -5,8 +5,8 @@ import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
+import idforideas.bonpland.exception.UsuarioNotFoundException;
 import idforideas.bonpland.mapper.UsuarioMapper;
-//import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 
@@ -17,13 +17,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -112,6 +109,20 @@ class UsuarioServiceTest {
         assertEquals("Rol no encontrado", e.getMessage());
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
+
+@Test
+void deberiaLanzarExcepcionBuscandoUsuarioPorId_cuandoNoExiste(){
+    //GIVEN
+    when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+
+    //WHEN
+    Executable executable = ()-> usuarioService.buscarUsuarioPorId(1L);
+
+    //THEN
+    UsuarioNotFoundException e = assertThrows(UsuarioNotFoundException.class, executable);
+    assertEquals("Usuario no encontrado", e.getMessage());
+    verify(usuarioRepository).findById(any());
+}
 
     private UsuarioDTO getUsuarioDTO() {
         UsuarioDTO dto = new UsuarioDTO();
