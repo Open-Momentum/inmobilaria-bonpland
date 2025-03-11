@@ -7,6 +7,7 @@ import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNotFoundException;
 import idforideas.bonpland.mapper.UsuarioMapper;
+import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 
@@ -21,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -31,6 +33,9 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
+
+    private UsuarioDTO dto;
+    private Usuario usuario;
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
     @Mock
@@ -38,11 +43,7 @@ class UsuarioServiceTest {
     @Mock
     private RolRepository rolRepository;
     @Spy
-    UsuarioMapper usuarioMapper;
-
-
-    private UsuarioDTO dto;
-    private Usuario usuario;
+    UsuarioMapperImpl usuarioMapper;
 
     @BeforeEach
     void setUp() {

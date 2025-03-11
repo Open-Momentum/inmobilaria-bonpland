@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 /**
  *
- * @author Martina
+ * @author Figueroa Mauro
  */
 @Data
 @NoArgsConstructor

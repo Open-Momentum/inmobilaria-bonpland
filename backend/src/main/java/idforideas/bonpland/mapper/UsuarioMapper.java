@@ -3,6 +3,7 @@ package idforideas.bonpland.mapper;
 
 import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Usuario;
+import org.springframework.stereotype.Component;
 
 /**
  *

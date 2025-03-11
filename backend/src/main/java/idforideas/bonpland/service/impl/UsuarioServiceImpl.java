@@ -11,6 +11,7 @@ import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -19,14 +20,13 @@ import java.util.Optional;
  *
  * @author Figueroa Mauro
  */
+
+@AllArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private RolRepository rolRepository;
-
-    private final UsuarioMapper mapper = new UsuarioMapperImpl();
+    private final UsuarioRepository usuarioRepository;
+    private final RolRepository rolRepository;
+    private final UsuarioMapper mapper;
 
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
@@ -44,8 +44,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public Usuario actualizarUsuario(UsuarioDTO dto) {
         validarIdNulo(dto);
-        Usuario usuario = mapper.dtoAEntidad(dto);
         validarUsuarioBuscado(dto.getId());
+
+        Usuario usuario = mapper.dtoAEntidad(dto);
         return usuarioRepository.save(usuario);
     }
 
@@ -67,6 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private  void validarCorreo(String correo) {
         Optional<Usuario> correoEncontrado = usuarioRepository.findByCorreo(correo);
+
         if (correoEncontrado.isPresent()) {
             throw new CorreoExistenteException("El correo ya existe");
         }
