@@ -6,7 +6,6 @@ import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNotFoundException;
-import idforideas.bonpland.mapper.UsuarioMapper;
 import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -22,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -78,8 +76,8 @@ class UsuarioServiceTest {
         Executable executable = () -> usuarioService.guardarUsuario(dto);
 
         //THEN
-        CorreoExistenteException e = assertThrows(CorreoExistenteException.class, executable);
-        assertEquals("El correo ya existe", e.getMessage());
+        assertThrowsWithMessage(CorreoExistenteException.class, executable,"El correo ya existe");
+
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
@@ -106,58 +104,65 @@ class UsuarioServiceTest {
         Executable executable = () -> usuarioService.guardarUsuario(dto);
 
         //THEN
-        RolNoEncontradoException e = assertThrows(RolNoEncontradoException.class, executable);
-        assertEquals("Rol no encontrado", e.getMessage());
+        assertThrowsWithMessage(RolNoEncontradoException.class, executable, "Rol no encontrado");
+
         verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
-@Test
-void deberiaLanzarExcepcionBuscandoUsuarioPorId_cuandoNoExiste(){
-    //GIVEN
-    when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+    @Test
+    void deberiaLanzarExcepcionBuscandoUsuarioPorId_cuandoNoExiste() {
+        //GIVEN
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-    //WHEN
-    Executable executable = ()-> usuarioService.buscarUsuarioPorId(1L);
+        //WHEN
+        Executable executable = () -> usuarioService.buscarUsuarioPorId(1L);
 
-    //THEN
-    UsuarioNotFoundException e = assertThrows(UsuarioNotFoundException.class, executable);
-    assertEquals("Usuario no encontrado", e.getMessage());
-    verify(usuarioRepository).findById(any());
-}
+        //THEN
+       assertThrowsWithMessage(UsuarioNotFoundException.class, executable,"Usuario no encontrado");
 
-@Test
-void deberiaActualizarUsuario(){
-    //GIVEN
-    dto.setNombre("nuevo nombre");
-    dto.setId(1L);
-    Usuario usuarioActualizado = usuario;
-    usuarioActualizado.setNombre("nuevo nombre");
-    usuarioActualizado.setId(1L);
-    when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-    when(usuarioRepository.save(any())).thenReturn(usuarioActualizado);
+        verify(usuarioRepository).findById(any());
+    }
 
-    //WHEN
-    Usuario result = usuarioService.actualizarUsuario(dto);
+    @Test
+    void deberiaActualizarUsuario() {
+        //GIVEN
+        dto.setNombre("nuevo nombre");
+        dto.setId(1L);
 
-    //THEN
-    assertEquals(1L, usuario.getId());
-    assertEquals("nuevo nombre", usuario.getNombre());
-    verify(usuarioRepository).save(any(Usuario.class));
-    verify(usuarioRepository).findById(anyLong());
-}
+        Usuario usuarioActualizado = new Usuario();
+        usuarioActualizado.setNombre("nuevo nombre");
+        usuarioActualizado.setId(1L);
 
-@Test
-void deberiaLanzarExcepcion_cuandoElDtoTieneIdNulo(){
-    //WHEN
-    Executable executable = () -> usuarioService.actualizarUsuario(dto);
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.save(any())).thenReturn(usuarioActualizado);
 
-    //THEN
-    IllegalArgumentException e = assertThrows(IllegalArgumentException.class, executable);
-    assertEquals("El id no puede ser nulo para actualizar el usuario", e.getMessage());
-    verify(usuarioRepository,never()).save(any(Usuario.class));
-    verify(usuarioRepository,never()).findById(anyLong());
-}
+        //WHEN
+        Usuario result = usuarioService.actualizarUsuario(dto);
 
+        //THEN
+        assertEquals(1L, usuario.getId());
+        assertEquals("nuevo nombre", result.getNombre());
+
+        verify(usuarioRepository).save(any(Usuario.class));
+        verify(usuarioRepository).findById(anyLong());
+    }
+
+    @Test
+    void deberiaLanzarExcepcion_cuandoElDtoTieneIdNulo() {
+        //WHEN
+        Executable executable = () -> usuarioService.actualizarUsuario(dto);
+
+        //THEN
+        assertThrowsWithMessage(IllegalArgumentException.class, executable, "El id no puede ser nulo para actualizar el usuario");
+
+        verify(usuarioRepository, never()).save(any(Usuario.class));
+        verify(usuarioRepository, never()).findById(anyLong());
+    }
+
+    private <T extends Exception> void assertThrowsWithMessage(Class<T> tClass, Executable executable, String message) {
+        Exception e = assertThrowsExactly(tClass, executable);
+        assertEquals(message, e.getMessage());
+    }
 
     private UsuarioDTO getUsuarioDTO() {
         UsuarioDTO dto = new UsuarioDTO();
