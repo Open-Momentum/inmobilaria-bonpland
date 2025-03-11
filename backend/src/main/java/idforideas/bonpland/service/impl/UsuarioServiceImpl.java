@@ -9,6 +9,8 @@ import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
+import idforideas.bonpland.mapper.UsuarioMapper;
+//import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
@@ -27,17 +29,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private RolRepository rolRepository;
 
+    private final UsuarioMapper mapper = UsuarioMapper.INSTANCE;
+
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
         validarCorreo(dto.getCorreo());
         Rol rolEncontrado = validarRol();
 
-        Usuario usuario = new Usuario();
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setClave(dto.getClave());
-        usuario.setCorreo(dto.getCorreo());
-        usuario.setTelefono(dto.getTelefono());
+        Usuario usuario = mapper.dtoAEntidad(dto);
         usuario.setRol(rolEncontrado);
         return usuarioRepository.save(usuario);
     }

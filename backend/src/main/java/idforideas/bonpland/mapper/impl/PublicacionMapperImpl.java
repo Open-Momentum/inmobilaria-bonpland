@@ -12,11 +12,13 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Martina
  */
+@Component
 public class PublicacionMapperImpl implements PublicacionMapper{
     LocalDateTime hoy = LocalDateTime.now();
      DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
