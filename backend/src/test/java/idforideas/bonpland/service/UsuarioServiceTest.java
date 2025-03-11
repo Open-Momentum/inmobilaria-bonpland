@@ -4,6 +4,7 @@ import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,6 +88,20 @@ class UsuarioServiceTest {
         //THEN
         assertEquals("USUARIO", usuarioGuardado.getRol().getNombre());
         verify(usuarioRepository).save(any(Usuario.class));
+    }
+
+    @Test
+    void deberiaLanzarExcepcion_cuandoNoEncuentraElRol(){
+        //GIVEN
+        when(rolRepository.findByNombre("USUARIO")).thenReturn(Optional.empty());
+
+        //WHEN
+        Executable executable = () -> usuarioService.guardarUsuario(dto);
+
+        //THEN
+        RolNoEncontradoException e = assertThrows(RolNoEncontradoException.class, executable);
+        assertEquals("Rol no encontrado", e.getMessage());
+        verify(usuarioRepository, never()).save(any(Usuario.class));
     }
 
     private  UsuarioDTO getUsuarioDTO() {

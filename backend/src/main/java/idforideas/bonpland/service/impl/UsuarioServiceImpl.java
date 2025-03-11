@@ -8,6 +8,7 @@ import idforideas.bonpland.dto.UsuarioDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
@@ -28,11 +29,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario guardarUsuario(UsuarioDTO dto) {
-        Optional<Usuario> emailEncontrado = usuarioRepository.findByCorreo(dto.getCorreo());
-        Optional<Rol> rolEncontrado = rolRepository.findByNombre("USUARIO");
-        if (emailEncontrado.isPresent()) {
-            throw new CorreoExistenteException("El correo ya existe");
-        }
+        validarCorreo(dto.getCorreo());
+        Rol rolEncontrado = validarRol();
 
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
@@ -40,7 +38,20 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setClave(dto.getClave());
         usuario.setCorreo(dto.getCorreo());
         usuario.setTelefono(dto.getTelefono());
-        usuario.setRol(rolEncontrado.get());
+        usuario.setRol(rolEncontrado);
         return usuarioRepository.save(usuario);
+    }
+
+    private Rol validarRol() {
+        return rolRepository.findByNombre("USUARIO")
+                       .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado"));
+    }
+
+
+    private  void validarCorreo(String correo) {
+        Optional<Usuario> correoEncontrado = usuarioRepository.findByCorreo(correo);
+        if (correoEncontrado.isPresent()) {
+            throw new CorreoExistenteException("El correo ya existe");
+        }
     }
 }
