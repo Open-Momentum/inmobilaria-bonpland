@@ -45,11 +45,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario actualizarUsuario(UsuarioDTO dto) {
         validarIdNulo(dto);
         Usuario usuario = mapper.dtoAEntidad(dto);
-        if (usuarioRepository.findById(dto.getId()).isPresent()) {
-
+        validarUsuarioBuscado(dto.getId());
         return usuarioRepository.save(usuario);
-        }
-        return null;
     }
 
     private static void validarIdNulo(UsuarioDTO dto) {

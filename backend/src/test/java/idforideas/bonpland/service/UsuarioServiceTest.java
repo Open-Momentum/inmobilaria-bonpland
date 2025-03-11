@@ -157,6 +157,7 @@ void deberiaLanzarExcepcion_cuandoElDtoTieneIdNulo(){
     verify(usuarioRepository,never()).findById(anyLong());
 }
 
+
     private UsuarioDTO getUsuarioDTO() {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("test");
