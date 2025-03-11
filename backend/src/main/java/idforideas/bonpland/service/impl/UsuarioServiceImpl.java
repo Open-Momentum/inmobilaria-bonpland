@@ -42,6 +42,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         return validarUsuarioBuscado(id);
     }
 
+    public Usuario actualizarUsuario(UsuarioDTO dto) {
+        Usuario usuario = mapper.dtoAEntidad(dto);
+        if (usuarioRepository.findById(dto.getId()).isPresent()) {
+
+        return usuarioRepository.save(usuario);
+        }
+        return null;
+    }
+
     private  Usuario validarUsuarioBuscado(Long id) {
         return usuarioRepository.findById(id)
                        .orElseThrow(()-> new UsuarioNotFoundException("Usuario no encontrado"));

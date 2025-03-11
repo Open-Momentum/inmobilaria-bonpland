@@ -124,6 +124,27 @@ void deberiaLanzarExcepcionBuscandoUsuarioPorId_cuandoNoExiste(){
     verify(usuarioRepository).findById(any());
 }
 
+@Test
+void deberiaActualizarUsuario(){
+    //GIVEN
+    dto.setNombre("nuevo nombre");
+    dto.setId(1L);
+    Usuario usuarioActualizado = usuario;
+    usuarioActualizado.setNombre("nuevo nombre");
+    usuarioActualizado.setId(1L);
+    when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+    when(usuarioRepository.save(any())).thenReturn(usuarioActualizado);
+
+    //WHEN
+    Usuario result = usuarioService.actualizarUsuario(dto);
+
+    //THEN
+    assertEquals(1L, usuario.getId());
+    assertEquals("nuevo nombre", usuario.getNombre());
+    verify(usuarioRepository).save(any(Usuario.class));
+    verify(usuarioRepository).findById(anyLong());
+}
+
     private UsuarioDTO getUsuarioDTO() {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("test");
