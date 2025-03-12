@@ -43,7 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public Usuario actualizarUsuario(UsuarioDTO dto) {
-        validarIdNulo(dto);
+        validarIdNulo(dto.getId());
         validarUsuarioBuscado(dto.getId());
 
         Usuario usuario = mapper.dtoAEntidad(dto);
@@ -55,12 +55,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public int bajaUsuario(Long id) {
-        Usuario usuario = validarUsuarioBuscado(id);
+        validarIdNulo(id);
+        validarUsuarioBuscado(id);
+
         return usuarioRepository.darBaja(id);
     }
 
-    private static void validarIdNulo(UsuarioDTO dto) {
-        if (dto.getId() == null) {
+    private static void validarIdNulo(Long id) {
+        if (id == null) {
             throw new IllegalArgumentException("El id no puede ser nulo para actualizar el usuario");
         }
     }
