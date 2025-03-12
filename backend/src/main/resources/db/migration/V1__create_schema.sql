@@ -8,7 +8,7 @@ USE bonpland;
 --
 
 CREATE TABLE `fotos` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -19,13 +19,13 @@ CREATE TABLE `fotos` (
 --
 
 CREATE TABLE `inmobiliarias` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `razon_social` varchar(20) NOT NULL,
-  `cuit` int(11) NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `cuit` int NOT NULL,
+  `telefono` int NOT NULL,
   `c_fiscal` varchar(20) NOT NULL,
-  `usuario_id` bigint(20) NOT NULL
+  `usuario_id` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -35,17 +35,17 @@ CREATE TABLE `inmobiliarias` (
 --
 
 CREATE TABLE `inmuebles` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `descripcion` varchar(500) NOT NULL,
-  `codigo` int(11) NOT NULL,
+  `codigo` int NOT NULL,
   `direccion` varchar(500) NOT NULL,
-  `codigo_postal` int(11) NOT NULL,
-  `cant_ambientes` int(11) NOT NULL,
-  `cant_dormi` int(11) NOT NULL,
-  `cant_banos` int(11) NOT NULL,
-  `cant_cochera` int(11) NOT NULL,
+  `codigo_postal` int NOT NULL,
+  `cant_ambientes` int NOT NULL,
+  `cant_dormi` int NOT NULL,
+  `cant_banos` int NOT NULL,
+  `cant_cochera` int NOT NULL,
   `metros_cuadrados` double NOT NULL,
-  `usuario_id` bigint(20) NOT NULL,
+  `usuario_id` bigint NOT NULL,
   `tipo_propiedad` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -56,13 +56,13 @@ CREATE TABLE `inmuebles` (
 --
 
 CREATE TABLE `publicaciones` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha_publicacion` date NOT NULL,
   `precio` double NOT NULL,
-  `inmueble_id` bigint(20) NOT NULL,
-  `usuario_id` bigint(20) NOT NULL,
+  `inmueble_id` bigint NOT NULL,
+  `usuario_id` bigint NOT NULL,
   `estado` varchar(20) NOT NULL,
   `tipo_moneda` varchar(20) NOT NULL,
   `tipo_operacion` varchar(20) NOT NULL
@@ -75,20 +75,21 @@ CREATE TABLE `publicaciones` (
 --
 
 CREATE TABLE `roles` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 
 CREATE TABLE `usuarios` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `clave` varchar(20) NOT NULL,
   `correo` varchar(60) NOT NULL,
   `telefono` varchar(14) NOT NULL,
-  `rol_id` bigint(20) NOT NULL
+  `rol_id` bigint NOT NULL,
+  `activo` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -145,34 +146,34 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `foto`
 --
 ALTER TABLE `fotos`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inmobiliaria`
 --
 ALTER TABLE `inmobiliarias`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmuebles`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `publicacion`
 --
 ALTER TABLE `publicaciones`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- Filtros para la tabla `inmobiliaria`

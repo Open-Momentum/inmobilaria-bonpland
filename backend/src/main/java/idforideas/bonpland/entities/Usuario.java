@@ -52,9 +52,14 @@ public class Usuario implements Serializable {
     private String telefono;
 
     @Basic(optional = false)
+    @Column(name = "activo", nullable = false,columnDefinition = "DEFAULT 1")
+    private Boolean activo = true;
+
+    @Basic(optional = false)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
+
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
