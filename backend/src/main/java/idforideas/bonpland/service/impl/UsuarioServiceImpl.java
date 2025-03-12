@@ -53,6 +53,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Page<Usuario> listarUsuarios(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
+
+    public int bajaUsuario(Long id) {
+        Usuario usuario = validarUsuarioBuscado(id);
+        return usuarioRepository.darBaja(id);
+    }
+
     private static void validarIdNulo(UsuarioDTO dto) {
         if (dto.getId() == null) {
             throw new IllegalArgumentException("El id no puede ser nulo para actualizar el usuario");

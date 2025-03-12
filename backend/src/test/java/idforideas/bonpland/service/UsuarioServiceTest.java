@@ -183,6 +183,25 @@ class UsuarioServiceTest {
         verify(usuarioRepository).findAll(any(Pageable.class));
     }
 
+    @Test
+    void deberiaDarBajaUsuario(){
+        //GIVEN
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.darBaja(1L)).thenAnswer(invocation -> {
+            usuario.setActivo(false);
+            return 1;
+        } );
+
+        //WHEN
+        int filasAfectadas = usuarioService.bajaUsuario(1L);
+
+        //THEN
+        assertFalse(usuario.getActivo());
+        assertEquals(1, filasAfectadas);
+
+        verify(usuarioRepository).darBaja(anyLong());
+    }
+
     private <T extends Exception> void assertThrowsWithMessage(Class<T> tClass, Executable executable, String message) {
         Exception e = assertThrowsExactly(tClass, executable);
         assertEquals(message, e.getMessage());
