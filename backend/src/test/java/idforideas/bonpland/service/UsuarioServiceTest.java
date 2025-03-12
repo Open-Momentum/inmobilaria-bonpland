@@ -158,7 +158,7 @@ class UsuarioServiceTest {
         Executable executable = () -> usuarioService.actualizarUsuario(dto);
 
         //THEN
-        assertThrowsWithMessage(IllegalArgumentException.class, executable, "El id no puede ser nulo para actualizar el usuario");
+        assertThrowsWithMessage(IllegalArgumentException.class, executable, "El id no puede ser nulo para realizar esta acción");
 
         verify(usuarioRepository, never()).save(any(Usuario.class));
         verify(usuarioRepository, never()).findById(anyLong());

@@ -39,6 +39,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public Usuario buscarUsuarioPorId(Long id) {
+        validarIdNulo(id);
         return validarUsuarioBuscado(id);
     }
 
@@ -63,7 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private static void validarIdNulo(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("El id no puede ser nulo para actualizar el usuario");
+            throw new IllegalArgumentException("El id no puede ser nulo para realizar esta acción");
         }
     }
 
