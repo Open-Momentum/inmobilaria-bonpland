@@ -36,6 +36,15 @@ class UsuarioRepositoryITest {
     }
 
     @Test
+    void deberiaRetornarCero_cuandoSeDaDeBajaUsuarioInexistente() {
+        //WHEN
+        int filasAfectadas =usuarioRepository.darBaja(100L);
+
+        //THEN
+        assertEquals(0, filasAfectadas);
+    }
+
+    @Test
     void deberiaBuscarUsuarioPorCorreo(){
         //WHEN
         Optional<Usuario> usuarioBuscado = usuarioRepository.findByCorreo("test@mail.com");
