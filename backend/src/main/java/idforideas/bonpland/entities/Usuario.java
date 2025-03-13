@@ -52,7 +52,7 @@ public class Usuario implements Serializable {
     private String telefono;
 
     @Basic(optional = false)
-    @Column(name = "activo", nullable = false,columnDefinition = "DEFAULT 1")
+    @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
     @Basic(optional = false)

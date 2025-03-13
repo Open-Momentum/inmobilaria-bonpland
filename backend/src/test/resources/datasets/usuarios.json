@@ -1,0 +1,20 @@
+{
+  "roles": [
+    {
+      "id": 1,
+      "nombre": "USUARIO"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 10,
+      "nombre": "test",
+      "apellido": "test",
+      "clave": "clavenueva.12",
+      "correo": "test@mail.com",
+      "activo": true,
+      "telefono": "+541122334455",
+      "rol_id": 1
+    }
+  ]
+}
