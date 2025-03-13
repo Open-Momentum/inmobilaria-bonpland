@@ -36,7 +36,7 @@ class UsuarioRepositoryITest {
     }
 
     @Test
-    void deberiaRetornarCero_cuandoSeDaDeBajaUsuarioInexistente() {
+    void deberiaRetornarCero_cuandoSeDaBajaUsuarioInexistente() {
         //WHEN
         int filasAfectadas =usuarioRepository.darBaja(100L);
 
@@ -53,5 +53,14 @@ class UsuarioRepositoryITest {
         assertTrue(usuarioBuscado.isPresent());
         assertEquals("test", usuarioBuscado.get().getNombre());
         assertNotNull(usuarioBuscado.get().getId());
+    }
+
+    @Test
+    void deberiaRetornarOptionalVacio_cuandoNoExisteUsuarioConEseCorreo(){
+        //WHEN
+        Optional<Usuario> usuarioBuscado = usuarioRepository.findByCorreo("ejemplo@mail.com");
+
+        //THEN
+        assertFalse(usuarioBuscado.isPresent());
     }
 }
