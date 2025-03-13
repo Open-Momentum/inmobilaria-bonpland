@@ -5,11 +5,15 @@ import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
+import idforideas.bonpland.entities.Usuario;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Optional;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -25,9 +29,20 @@ class UsuarioRepositoryITest {
     @ExpectedDataSet(value = "usuarios-baja.json")
     void deberiaCambiarActivoAFalse_cuandoSeDaDeBaja() {
         //WHEN
-        usuarioRepository.darBaja(10L);
+        int filasAfectadas =usuarioRepository.darBaja(10L);
 
-        //THEN --> ver dataset
+        //THEN --> ver Dataset
+        assertEquals(1, filasAfectadas);
     }
 
+    @Test
+    void deberiaBuscarUsuarioPorCorreo(){
+        //WHEN
+        Optional<Usuario> usuarioBuscado = usuarioRepository.findByCorreo("test@mail.com");
+
+        //THEN
+        assertTrue(usuarioBuscado.isPresent());
+        assertEquals("test", usuarioBuscado.get().getNombre());
+        assertNotNull(usuarioBuscado.get().getId());
+    }
 }
