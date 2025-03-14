@@ -128,6 +128,7 @@ class UsuarioServiceTest {
         verify(usuarioRepository).findById(any());
     }
 
+
     @Test
     void deberiaActualizarUsuario() {
         //GIVEN
