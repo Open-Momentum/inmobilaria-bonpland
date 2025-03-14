@@ -1,12 +1,12 @@
 package idforideas.bonpland.service;
 
-import idforideas.bonpland.dto.UsuarioDTO;
+import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNotFoundException;
-import idforideas.bonpland.mapper.impl.UsuarioMapperImpl;
+import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
 
-    private UsuarioDTO dto;
+    private UsuarioCompletoDTO dto;
     private Usuario usuario;
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
@@ -46,7 +46,7 @@ class UsuarioServiceTest {
     @Mock
     private RolRepository rolRepository;
     @Spy
-    UsuarioMapperImpl usuarioMapper;
+    UsuarioCompletoMapper usuarioMapper;
 
     @BeforeEach
     void setUp() {
@@ -207,8 +207,8 @@ class UsuarioServiceTest {
         assertEquals(message, e.getMessage());
     }
 
-    private UsuarioDTO getUsuarioDTO() {
-        UsuarioDTO dto = new UsuarioDTO();
+    private UsuarioCompletoDTO getUsuarioDTO() {
+        UsuarioCompletoDTO dto = new UsuarioCompletoDTO();
         dto.setNombre("test");
         dto.setApellido("test");
         dto.setTelefono("+541122334455");

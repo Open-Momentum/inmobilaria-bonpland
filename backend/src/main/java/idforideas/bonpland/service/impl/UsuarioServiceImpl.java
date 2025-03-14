@@ -1,12 +1,13 @@
 package idforideas.bonpland.service.impl;
 
-import idforideas.bonpland.dto.UsuarioDTO;
+import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNotFoundException;
-import idforideas.bonpland.mapper.UsuarioMapper;
+import idforideas.bonpland.mapper.Mapper;
+import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.UsuarioService;
@@ -26,14 +27,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
-    private final UsuarioMapper mapper;
+    private final UsuarioCompletoMapper mapper;
 
     @Override
-    public Usuario guardarUsuario(UsuarioDTO dto) {
+    public Usuario guardarUsuario(UsuarioCompletoDTO dto) {
         validarCorreo(dto.getCorreo());
         Rol rolEncontrado = validarRol("USUARIO");
 
-        Usuario usuario = mapper.dtoAEntidad(dto);
+        Usuario usuario = mapper.aEntidad(dto);
         usuario.setRol(rolEncontrado);
         return usuarioRepository.save(usuario);
     }
@@ -43,11 +44,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return validarUsuarioBuscado(id);
     }
 
-    public Usuario actualizarUsuario(UsuarioDTO dto) {
+    public Usuario actualizarUsuario(UsuarioCompletoDTO dto) {
         validarIdNulo(dto.getId());
         validarUsuarioBuscado(dto.getId());
 
-        Usuario usuario = mapper.dtoAEntidad(dto);
+        Usuario usuario = mapper.aEntidad(dto);
         return usuarioRepository.save(usuario);
     }
 

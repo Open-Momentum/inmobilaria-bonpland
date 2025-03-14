@@ -1,13 +1,11 @@
 
 package idforideas.bonpland.service;
 
-import idforideas.bonpland.dto.UsuarioDTO;
+import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  *
@@ -16,11 +14,11 @@ import java.util.Optional;
 @Service
 public interface UsuarioService {
 
-    Usuario guardarUsuario(UsuarioDTO dto);
+    Usuario guardarUsuario(UsuarioCompletoDTO dto);
 
     Usuario buscarUsuarioPorId(Long id);
 
-    Usuario actualizarUsuario(UsuarioDTO dto);
+    Usuario actualizarUsuario(UsuarioCompletoDTO dto);
 
     Page<Usuario> listarUsuarios(Pageable pageable);
 }

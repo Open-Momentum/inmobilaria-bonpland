@@ -17,7 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByCorreo(String correo);
 
-
     @Modifying
     @Query(value = "UPDATE Usuario u SET u.activo=false WHERE u.id=:id")
     int darBaja(Long id);

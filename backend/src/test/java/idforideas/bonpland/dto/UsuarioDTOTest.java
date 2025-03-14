@@ -1,5 +1,6 @@
 package idforideas.bonpland.dto;
 
+import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -20,16 +21,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Figueroa Mauro
  */
 class UsuarioDTOTest {
-    private UsuarioDTO usuarioValido;
+    private UsuarioCompletoDTO usuarioValido;
     private static Validator validator;
-    private Set<ConstraintViolation<UsuarioDTO>> errores;
+    private Set<ConstraintViolation<UsuarioCompletoDTO>> errores;
 
     @BeforeEach
     void setUp() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
 
-        usuarioValido = new UsuarioDTO();
+        usuarioValido = new UsuarioCompletoDTO();
         usuarioValido.setNombre("test");
         usuarioValido.setApellido("test");
         usuarioValido.setTelefono("+541122334455");
@@ -131,7 +132,7 @@ class UsuarioDTOTest {
 
     private void validarCampo(String input, String setter) {
         try {
-            Method method = UsuarioDTO.class.getMethod(setter, String.class);
+            Method method = UsuarioCompletoDTO.class.getMethod(setter, String.class);
             method.invoke(usuarioValido, input);
 
             errores = validator.validate(usuarioValido);

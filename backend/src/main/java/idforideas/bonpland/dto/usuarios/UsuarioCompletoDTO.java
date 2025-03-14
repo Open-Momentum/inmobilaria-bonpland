@@ -1,5 +1,5 @@
 
-package idforideas.bonpland.dto;
+package idforideas.bonpland.dto.usuarios;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioDTO {
+public class UsuarioCompletoDTO{
     private static final String CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
     private static final String NOMBRE_PATTERN = "^[a-zA-Z]+( [a-zA-Z]+)*$";
     private static final String CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
