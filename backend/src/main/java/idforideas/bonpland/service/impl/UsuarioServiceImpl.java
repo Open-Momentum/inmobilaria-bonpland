@@ -31,10 +31,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario guardarUsuario(UsuarioCompletoDTO dto) {
         validarCorreo(dto.getCorreo());
-        Rol rolEncontrado = validarRol("USUARIO");
 
         Usuario usuario = mapper.aEntidad(dto);
-        usuario.setRol(rolEncontrado);
+        asignarRol(usuario,"usuario");
         return usuarioRepository.save(usuario);
     }
 
@@ -61,6 +60,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.darBaja(id);
     }
+
+    private void asignarRol(Usuario usuario, String nombreRol) {
+        Rol rolEncontrado = validarRol(nombreRol.toUpperCase());
+        usuario.setRol(rolEncontrado);
+    }
+
 
     private static void validarIdNulo(Long id) {
         if (id == null) {
