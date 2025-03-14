@@ -115,6 +115,20 @@ class UsuarioServiceTest {
     }
 
     @Test
+    void deberiaRetornarUsuarioPorId() {
+        //GIVEN
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(getUsuario()));
+
+        //WHEN
+        Usuario usuarioEncontrado = usuarioService.buscarUsuarioPorId(1L);
+
+        //THEN
+        assertNotNull(usuarioEncontrado);
+
+        verify(usuarioRepository).findById(any());
+    }
+
+    @Test
     void deberiaLanzarExcepcionBuscandoUsuarioPorId_cuandoNoExiste() {
         //GIVEN
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
@@ -127,7 +141,6 @@ class UsuarioServiceTest {
 
         verify(usuarioRepository).findById(any());
     }
-
 
     @Test
     void deberiaActualizarUsuario() {
