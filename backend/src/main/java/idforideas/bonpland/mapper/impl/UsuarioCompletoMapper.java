@@ -2,13 +2,13 @@ package idforideas.bonpland.mapper.impl;
 
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
-import idforideas.bonpland.mapper.Mapper;
+import idforideas.bonpland.mapper.MapperDoble;
+import idforideas.bonpland.mapper.MapperSimple;
 
-public class UsuarioCompletoMapper implements Mapper<Usuario, UsuarioCompletoDTO> {
-
+public class UsuarioCompletoMapper implements MapperSimple<Usuario, UsuarioCompletoDTO> {
 
     @Override
-    public Usuario aEntidad(UsuarioCompletoDTO dto) {
+    public Usuario map(UsuarioCompletoDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setId(dto.getId());
         usuario.setNombre(dto.getNombre());
@@ -19,8 +19,4 @@ public class UsuarioCompletoMapper implements Mapper<Usuario, UsuarioCompletoDTO
         return usuario;
     }
 
-    @Override
-    public UsuarioCompletoDTO aDTO(Usuario entidad) {
-        return null;
-    }
 }

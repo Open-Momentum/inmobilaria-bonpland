@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario guardarUsuario(UsuarioCompletoDTO dto) {
         validarCorreo(dto.getCorreo());
 
-        Usuario usuario = mapper.aEntidad(dto);
+        Usuario usuario = mapper.map(dto);
         asignarRol(usuario,"usuario");
         return usuarioRepository.save(usuario);
     }
@@ -46,7 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         validarIdNulo(dto.getId());
         validarUsuarioBuscado(dto.getId());
 
-        Usuario usuario = mapper.aEntidad(dto);
+        Usuario usuario = mapper.map(dto);
         return usuarioRepository.save(usuario);
     }
 

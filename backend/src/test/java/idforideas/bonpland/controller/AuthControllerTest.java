@@ -1,14 +1,11 @@
 package idforideas.bonpland.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
@@ -28,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private UsuarioService usuarioService;
     @Autowired
