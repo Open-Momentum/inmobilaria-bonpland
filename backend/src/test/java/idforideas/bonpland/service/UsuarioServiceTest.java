@@ -5,7 +5,7 @@ import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
-import idforideas.bonpland.exception.UsuarioNotFoundException;
+import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -123,7 +123,7 @@ class UsuarioServiceTest {
         Executable executable = () -> usuarioService.buscarUsuarioPorId(1L);
 
         //THEN
-       assertThrowsWithMessage(UsuarioNotFoundException.class, executable,"Usuario no encontrado");
+       assertThrowsWithMessage(UsuarioNoEncontradoException.class, executable,"Usuario no encontrado");
 
         verify(usuarioRepository).findById(any());
     }

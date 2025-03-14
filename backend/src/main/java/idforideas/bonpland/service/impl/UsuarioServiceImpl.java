@@ -5,8 +5,7 @@ import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
-import idforideas.bonpland.exception.UsuarioNotFoundException;
-import idforideas.bonpland.mapper.Mapper;
+import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -71,7 +70,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private  Usuario validarUsuarioBuscado(Long id) {
         return usuarioRepository.findById(id)
-                       .orElseThrow(()-> new UsuarioNotFoundException("Usuario no encontrado"));
+                       .orElseThrow(()-> new UsuarioNoEncontradoException("Usuario no encontrado"));
     }
 
     private Rol validarRol(String nombre) {
