@@ -5,6 +5,7 @@ import idforideas.bonpland.dto.usuarios.UsuarioRegisterResponseDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<UsuarioRegisterResponseDTO> registrarUsuario(@RequestBody UsuarioCompletoDTO usuarioCompletoDTO) {
+    public ResponseEntity<UsuarioRegisterResponseDTO> registrarUsuario(@Valid @RequestBody UsuarioCompletoDTO usuarioCompletoDTO) {
         Usuario usuario = usuarioService.guardarUsuario(usuarioCompletoDTO);
         UsuarioRegisterResponseDTO dto = mapper.map(usuario);
         return ResponseEntity.created(buildURI(usuario.getId())).body(dto);

@@ -4,7 +4,9 @@ import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.MapperDoble;
 import idforideas.bonpland.mapper.MapperSimple;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UsuarioCompletoMapper implements MapperSimple<Usuario, UsuarioCompletoDTO> {
 
     @Override

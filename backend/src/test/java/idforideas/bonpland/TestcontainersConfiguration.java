@@ -1,6 +1,8 @@
 package idforideas.bonpland;
 
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MySQLContainer;
 
 @TestConfiguration
@@ -21,10 +23,6 @@ class TestcontainersConfiguration {
 				System.setProperty("spring.flyway.url", mysqlContainer.getJdbcUrl());
 				System.setProperty("spring.flyway.user", mysqlContainer.getUsername());
 				System.setProperty("spring.flyway.password", mysqlContainer.getPassword());
-
-				System.out.println("Database URL: " + mysqlContainer.getJdbcUrl());
-				System.out.println("Database User: " + mysqlContainer.getUsername());
-				System.out.println("Database Password: " + mysqlContainer.getPassword());
 			}
 
 		}
