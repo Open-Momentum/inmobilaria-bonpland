@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @WebMvcTest(controllers = AuthController.class)
 @Import(UsuarioRespuestaMapper.class)
 class AuthControllerTest {
+    public static final String PATH_REGISTRO = "/api/auth/registro";
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
@@ -42,7 +43,7 @@ class AuthControllerTest {
         when(usuarioService.guardarUsuario(getUsuarioDTO())).thenReturn(getUsuario());
 
         //WHEN
-        mockMvc.perform(post("/api/auth/registro")
+        mockMvc.perform(post(PATH_REGISTRO)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(getUsuarioDTO())))
 
@@ -62,7 +63,7 @@ class AuthControllerTest {
         DTO dto = new UsuarioCompletoDTO(null, "", "test@", "123123", "correo@mail", "1122334455");
 
         //WHEN
-        mockMvc.perform(post("/api/auth/registro")
+        mockMvc.perform(post(PATH_REGISTRO)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(dto)))
 
@@ -84,7 +85,7 @@ class AuthControllerTest {
         dto.setNombre("Error400");
 
         //WHEN
-        mockMvc.perform(post("/api/auth/registro")
+        mockMvc.perform(post(PATH_REGISTRO)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(dto)))
 
