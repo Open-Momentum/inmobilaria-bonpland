@@ -15,6 +15,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
+/**
+ *
+ * @author Figueroa Mauro
+ */
 @ActiveProfiles("test")
 @DataJpaTest
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, schema = "PUBLIC")

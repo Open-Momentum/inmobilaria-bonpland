@@ -6,6 +6,10 @@ import idforideas.bonpland.mapper.MapperDoble;
 import idforideas.bonpland.mapper.MapperSimple;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ * @author Figueroa Mauro
+ */
 @Component
 public class UsuarioCompletoMapper implements MapperSimple<Usuario, UsuarioCompletoDTO> {
 

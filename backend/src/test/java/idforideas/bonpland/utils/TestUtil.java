@@ -4,6 +4,13 @@ import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Figueroa Mauro
+ */
 public class TestUtil {
 
     public static UsuarioCompletoDTO getUsuarioDTO() {
@@ -26,5 +33,15 @@ public class TestUtil {
         usuarioValido.setCorreo("test@mail.com");
         usuarioValido.setRol(new Rol(1L, "USUARIO"));
         return usuarioValido;
+    }
+
+    public static List<Usuario> getUsuarios() {
+        List<Usuario> lista = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Usuario actual = getUsuario();
+            actual.setId((long) i + 1);
+            lista.add(actual);
+        }
+        return lista;
     }
 }

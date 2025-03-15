@@ -3,7 +3,7 @@ package idforideas.bonpland.dto.usuarios;
 
 /**
  *
- * @author Martina
+ * @author Figueroa Mauro
  */
 public class UsuarioRequest{
     
