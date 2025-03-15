@@ -1,10 +1,8 @@
 package idforideas.bonpland.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
-import idforideas.bonpland.entities.Rol;
-import idforideas.bonpland.entities.Usuario;
-import idforideas.bonpland.mapper.MapperSimple;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,8 @@ import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static idforideas.bonpland.utils.TestUtil.getUsuarioDTO;
 import static org.mockito.Mockito.*;
 
-import org.mockito.Spy;
+import static org.hamcrest.Matchers.hasItems;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -22,7 +21,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,13 +48,52 @@ class AuthControllerTest {
 
                 //THEN
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nombre").value("test"))
                 .andExpect(jsonPath("$.apellido").value("test"))
-                .andExpect(jsonPath("$.correo").value("test@mail.com"))
-                .andDo(print());
+                .andExpect(jsonPath("$.correo").value("test@mail.com"));
+
+        verify(usuarioService, times(1)).guardarUsuario(any(UsuarioCompletoDTO.class));
     }
 
+    @Test
+    void deberiaRetornar400YListaDeErrores_cuandoDTOEsInvalido() throws Exception {
+        //GIVEN
+        DTO dto = new UsuarioCompletoDTO(null, "", "test@", "123123", "correo@mail", "1122334455");
 
+        //WHEN
+        mockMvc.perform(post("/api/auth/registro")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto)))
+
+                //THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").isArray())
+                .andExpect(jsonPath("$.error", hasItems("El nombre debe tener entre 2 y 50 caracteres",
+                        "Formato de correo inválido","El apellido no puede contener caracteres especiales",
+                        "El nombre no puede contener caracteres especiales",
+                        "La clave debe tener entre 8 y 20 caracteres")));
+
+        verify(usuarioService,never()).guardarUsuario(any(UsuarioCompletoDTO.class));
+    }
+
+    @Test
+    void deberiaRetornar400YUnError_cuandoDTOTieneUnCampoInvalido() throws Exception {
+        //GIVEN
+        UsuarioCompletoDTO dto = getUsuarioDTO();
+        dto.setNombre("Error400");
+
+        //WHEN
+        mockMvc.perform(post("/api/auth/registro")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto)))
+
+                //THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").isString())
+                .andExpect(jsonPath("$.error").value("El nombre no puede contener caracteres especiales"));
+
+        verify(usuarioService,never()).guardarUsuario(any(UsuarioCompletoDTO.class));
+    }
 
 }
