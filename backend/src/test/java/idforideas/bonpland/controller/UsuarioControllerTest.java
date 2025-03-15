@@ -3,7 +3,11 @@ package idforideas.bonpland.controller;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.eclipse.persistence.expressions.ExpressionOperator.exists;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static idforideas.bonpland.utils.TestUtil.getUsuarios;
@@ -32,16 +38,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UsuarioControllerTest {
     public static final String PATH_USUARIOS = "/api/usuarios";
 
+    private List<Usuario>lista;
+    private Pageable pageable;
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
     private UsuarioService usuarioService;
 
+    @BeforeEach
+    void init() {
+        lista = new ArrayList<>();
+        pageable =  PageRequest.of(0,10);
+    }
+
+
     @Test
     void deberiaListarUsuariosYRetornar200() throws Exception {
         //GIVEN
-        List<Usuario> lista = getUsuarios();
-        Pageable pageable = PageRequest.of(0, 10);
+        lista = getUsuarios();
+
         when(usuarioService.listarUsuarios(pageable)).thenReturn(new PageImpl<>(lista, pageable, lista.size()));
 
         //WHEN
@@ -57,5 +72,19 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$._embedded.usuarioRespuestaDTOList[0].nombre").value(lista.get(0).getNombre()))
                 .andExpect(jsonPath("$._links.self").exists())
                 .andExpect(jsonPath("$.page.totalElements").value(lista.size()));
+    }
+
+    @Test
+    void deberiaRetornarListaVaciaY200() throws Exception {
+        //GIVEN
+        when(usuarioService.listarUsuarios(pageable)).thenReturn(new PageImpl<>(lista, pageable, lista.size()));
+
+        //WHEN
+        mockMvc.perform(get(PATH_USUARIOS)
+                                .contentType(MediaType.APPLICATION_JSON))
+
+        //THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded").doesNotExist());
     }
 }
