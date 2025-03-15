@@ -14,6 +14,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
+
+import static idforideas.bonpland.utils.TestUtil.getUsuarioDTO;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Figueroa Mauro
  */
 class UsuarioDTOTest {
-    private UsuarioCompletoDTO usuarioValido;
+    private UsuarioCompletoDTO dto;
     private static Validator validator;
     private Set<ConstraintViolation<UsuarioCompletoDTO>> errores;
 
@@ -30,19 +32,14 @@ class UsuarioDTOTest {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
 
-        usuarioValido = new UsuarioCompletoDTO();
-        usuarioValido.setNombre("test");
-        usuarioValido.setApellido("test");
-        usuarioValido.setTelefono("+541122334455");
-        usuarioValido.setClave("clave.secreta#2");
-        usuarioValido.setCorreo("test@mail.com");
+        dto = getUsuarioDTO();
         errores = null;
     }
 
     @Test
     void DeberiaValidarUsuario_cuandoAtributosSonValidos(){
         //WHEN
-        errores = validator.validate(usuarioValido);
+        errores = validator.validate(dto);
 
         //THEN
         assertTrue(errores.isEmpty());
@@ -133,9 +130,9 @@ class UsuarioDTOTest {
     private void validarCampo(String input, String setter) {
         try {
             Method method = UsuarioCompletoDTO.class.getMethod(setter, String.class);
-            method.invoke(usuarioValido, input);
+            method.invoke(dto, input);
 
-            errores = validator.validate(usuarioValido);
+            errores = validator.validate(dto);
         } catch (NoSuchMethodException |
                  IllegalAccessException |
                  InvocationTargetException e) {

@@ -9,6 +9,8 @@ import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 
+import static idforideas.bonpland.utils.TestUtil.getUsuario;
+import static idforideas.bonpland.utils.TestUtil.getUsuarioDTO;
 import static org.mockito.Mockito.*;
 
 import org.mockito.Spy;
@@ -56,25 +58,5 @@ class AuthControllerTest {
     }
 
 
-    private UsuarioCompletoDTO getUsuarioDTO() {
-        UsuarioCompletoDTO dto = new UsuarioCompletoDTO();
-        dto.setNombre("test");
-        dto.setApellido("test");
-        dto.setTelefono("+541122334455");
-        dto.setClave("clave.secreta#2");
-        dto.setCorreo("test@mail.com");
-        return dto;
-    }
 
-    private Usuario getUsuario() {
-        Usuario usuarioValido = new Usuario();
-        usuarioValido.setId(1L);
-        usuarioValido.setNombre("test");
-        usuarioValido.setApellido("test");
-        usuarioValido.setTelefono("+541122334455");
-        usuarioValido.setClave("clave.secreta#2");
-        usuarioValido.setCorreo("test@mail.com");
-        usuarioValido.setRol(new Rol(1L, "USUARIO"));
-        return usuarioValido;
-    }
 }
