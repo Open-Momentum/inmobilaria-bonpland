@@ -47,8 +47,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public Usuario actualizarUsuario(UsuarioCompletoDTO dto) {
         validarIdNulo(dto.getId());
-        validarCorreo(dto.getCorreo());
         Usuario usuarioBuscado = validarUsuarioBuscado(dto.getId());
+        if (!usuarioBuscado.getCorreo().equals(dto.getCorreo())) {
+        validarCorreo(dto.getCorreo());
+        }
 
         Usuario usuario = mapper.map(dto);
         usuario.setRol(usuarioBuscado.getRol());
