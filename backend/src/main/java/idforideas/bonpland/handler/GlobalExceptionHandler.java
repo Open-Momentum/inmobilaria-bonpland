@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsuarioNoEncontradoException.class)
-    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UsuarioNoEncontradoException ex) {
+    public ResponseEntity<Map<String, Object>> handleUsuarioNoEncontradoException(UsuarioNoEncontradoException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
