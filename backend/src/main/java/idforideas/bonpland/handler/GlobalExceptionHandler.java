@@ -1,6 +1,8 @@
 
 package idforideas.bonpland.handler;
 
+import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +17,30 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author Martina
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-     @ExceptionHandler(UsuarioNoEncontradoException.class)
-    public ResponseEntity<String>handleUserNotFoundException(UsuarioNoEncontradoException uf){
-         return new ResponseEntity<>(uf.getMessage(), HttpStatus.NOT_FOUND);
+
+    @ExceptionHandler(UsuarioNoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UsuarioNoEncontradoException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(RolNoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> handleRolNoEncontradoException(RolNoEncontradoException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(CorreoExistenteException.class)
+    public ResponseEntity<Map<String, Object>> handleCorreoExistente(CorreoExistenteException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

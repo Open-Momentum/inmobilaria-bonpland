@@ -124,8 +124,8 @@ class UsuarioControllerTest {
 
                 //THEN
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").isString())
-                .andExpect(jsonPath("$").value("Usuario no encontrado"));
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.error").value("Usuario no encontrado"));
 
     }
 }
