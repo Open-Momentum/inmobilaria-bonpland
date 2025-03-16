@@ -4,6 +4,7 @@ import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
@@ -174,7 +175,7 @@ class UsuarioServiceTest {
         Executable executable = () -> usuarioService.actualizarUsuario(dto);
 
         //THEN
-        assertThrowsWithMessage(IllegalArgumentException.class, executable, "El id no puede ser nulo para realizar esta acción");
+        assertThrowsWithMessage(IdInexistenteException.class, executable, "El id no puede ser nulo para realizar esta acción");
 
         verify(usuarioRepository, never()).save(any(Usuario.class));
         verify(usuarioRepository, never()).findById(anyLong());

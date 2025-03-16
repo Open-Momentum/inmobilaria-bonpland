@@ -3,6 +3,7 @@ package idforideas.bonpland.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
+import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.Test;
@@ -102,5 +103,25 @@ class AuthControllerTest {
 
         verify(usuarioService,never()).guardarUsuario(any(UsuarioCompletoDTO.class));
     }
+
+    @Test
+    void deberiaRetornar400_cuandoDTOTieneCorreoExistente() throws Exception {
+        //GIVEN
+        UsuarioCompletoDTO dto = getUsuarioDTO();
+        when(usuarioService.guardarUsuario(dto)).thenThrow(new CorreoExistenteException("El correo ya existe"));
+
+        //WHEN
+        mockMvc.perform(post(PATH_REGISTRO)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto)))
+
+                //THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").isString())
+                .andExpect(jsonPath("$.error").value("El correo ya existe"));
+
+        verify(usuarioService).guardarUsuario(any(UsuarioCompletoDTO.class));
+    }
+
 
 }

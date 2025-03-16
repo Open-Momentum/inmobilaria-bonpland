@@ -6,6 +6,7 @@ import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.exception.RolNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
+import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -46,6 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     public Usuario actualizarUsuario(UsuarioCompletoDTO dto) {
         validarIdNulo(dto.getId());
+        validarCorreo(dto.getCorreo());
         Usuario usuarioBuscado = validarUsuarioBuscado(dto.getId());
 
         Usuario usuario = mapper.map(dto);
@@ -72,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private static void validarIdNulo(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("El id no puede ser nulo para realizar esta acción");
+            throw new IdInexistenteException("El id no puede ser nulo para realizar esta acción");
         }
     }
 
