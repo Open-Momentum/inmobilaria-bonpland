@@ -1,6 +1,7 @@
 
 package idforideas.bonpland.controller;
 
+import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.dto.usuarios.UsuarioRespuestaDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
@@ -39,5 +40,13 @@ public class UsuarioController {
     public ResponseEntity<UsuarioRespuestaDTO> buscarUsuarioPorId(@PathVariable Long id) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(id);
         return ResponseEntity.ok(mapper.map(usuario));
+    }
+
+    @PutMapping
+    public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@Valid @RequestBody UsuarioCompletoDTO usuarioCompletoDTO) {
+        Usuario usuario = usuarioService.actualizarUsuario(usuarioCompletoDTO);
+        UsuarioRespuestaDTO dto = mapper.map(usuario);
+        return ResponseEntity.ok(dto);
+
     }
 }

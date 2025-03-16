@@ -1,5 +1,6 @@
 package idforideas.bonpland.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
@@ -8,9 +9,7 @@ import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static idforideas.bonpland.utils.TestUtil.getUsuario;
-import static org.eclipse.persistence.expressions.ExpressionOperator.exists;
-import static org.hamcrest.Matchers.hasSize;
+import static idforideas.bonpland.utils.TestUtil.*;
 import static org.mockito.Mockito.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import static idforideas.bonpland.utils.TestUtil.getUsuarios;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author Figueroa Mauro
@@ -49,11 +44,13 @@ class UsuarioControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private UsuarioService usuarioService;
+    ObjectMapper objectMapper;
 
     @BeforeEach
     void init() {
         lista = new ArrayList<>();
         pageable = PageRequest.of(0, 10);
+        objectMapper = new ObjectMapper();
     }
 
 
@@ -108,9 +105,11 @@ class UsuarioControllerTest {
                 //THEN
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                 .andExpect(jsonPath("$.nombre").value("test"))
+                .andExpect(jsonPath("$.nombre").value("test"))
                 .andExpect(jsonPath("$.apellido").value("test"))
                 .andExpect(jsonPath("$.correo").value("test@mail.com"));
+
+        verify(usuarioService).buscarUsuarioPorId(anyLong());
     }
 
     @Test
@@ -127,5 +126,28 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$").isMap())
                 .andExpect(jsonPath("$.error").value("Usuario no encontrado"));
 
+        verify(usuarioService).buscarUsuarioPorId(anyLong());
+    }
+
+    @Test
+    void deberiaActualizarUsuarioYRetornar200() throws Exception {
+        //GIVEN
+        UsuarioCompletoDTO dto = getUsuarioDTO();
+        dto.setId(1L);
+        Usuario usuarioActualizado = getUsuario();
+        usuarioActualizado.setNombre("Nuevo nombre");
+        when(usuarioService.actualizarUsuario(dto)).thenReturn(usuarioActualizado);
+
+        //WHEN
+        mockMvc.perform(put(PATH_USUARIOS)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto)))
+
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.nombre").value("Nuevo nombre"));
+
+        verify(usuarioService).actualizarUsuario(any(UsuarioCompletoDTO.class));
     }
 }
