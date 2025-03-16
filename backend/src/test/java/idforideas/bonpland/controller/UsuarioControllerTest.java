@@ -2,6 +2,7 @@ package idforideas.bonpland.controller;
 
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static idforideas.bonpland.utils.TestUtil.getUsuarios;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -109,5 +111,21 @@ class UsuarioControllerTest {
                  .andExpect(jsonPath("$.nombre").value("test"))
                 .andExpect(jsonPath("$.apellido").value("test"))
                 .andExpect(jsonPath("$.correo").value("test@mail.com"));
+    }
+
+    @Test
+    void deberiaRetornar400buscandoPorId_cuandoNoExiste() throws Exception {
+        //GIVEN
+        when(usuarioService.buscarUsuarioPorId(1L)).thenThrow(new UsuarioNoEncontradoException("Usuario no encontrado"));
+
+        //WHEN
+        mockMvc.perform(get(PATH_USUARIOS + "/1")
+                                .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").isString())
+                .andExpect(jsonPath("$").value("Usuario no encontrado"));
+
     }
 }
