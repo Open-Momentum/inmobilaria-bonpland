@@ -150,4 +150,5 @@ class UsuarioControllerTest {
 
         verify(usuarioService).actualizarUsuario(any(UsuarioCompletoDTO.class));
     }
+    
 }
