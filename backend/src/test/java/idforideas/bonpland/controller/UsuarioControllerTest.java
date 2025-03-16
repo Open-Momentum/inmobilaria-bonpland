@@ -1,8 +1,10 @@
 package idforideas.bonpland.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
@@ -147,6 +149,27 @@ class UsuarioControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nombre").value("Nuevo nombre"));
+
+        verify(usuarioService).actualizarUsuario(any(UsuarioCompletoDTO.class));
+    }
+
+    @Test
+    void deberiaRetornar400ActualizandoUsuario_cuandoNoTieneId() throws Exception {
+        //GIVEN
+        UsuarioCompletoDTO dto = getUsuarioDTO();
+        dto.setId(10L);
+        when(usuarioService.actualizarUsuario(dto))
+                .thenThrow(new IdInexistenteException("El id no puede ser nulo para realizar esta acción"));
+
+        //WHEN
+        mockMvc.perform(put(PATH_USUARIOS)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(dto)))
+
+        //THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.error").value("El id no puede ser nulo para realizar esta acción"));
 
         verify(usuarioService).actualizarUsuario(any(UsuarioCompletoDTO.class));
     }
