@@ -150,5 +150,23 @@ class UsuarioControllerTest {
 
         verify(usuarioService).actualizarUsuario(any(UsuarioCompletoDTO.class));
     }
-    
+
+    @Test
+    void deberiaHacerBorradoLogicoPorId() throws Exception {
+        //GIVEN
+        Usuario usuario = getUsuario();
+        usuario.setActivo(false);
+        when(usuarioService.buscarUsuarioPorId(1L)).thenReturn(usuario);
+        when(usuarioService.bajaLogicaUsuario(1L)).thenReturn(1);
+
+
+        //WHEN
+        mockMvc.perform(delete(PATH_USUARIOS + "/1")
+                                .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+
+    }
 }

@@ -33,12 +33,14 @@ public class UsuarioController {
     public ResponseEntity<?> listarUsuarios(@PageableDefault(size = 10) Pageable pageable,
                                             PagedResourcesAssembler<UsuarioRespuestaDTO> pagedResourcesAssembler) {
         Page<UsuarioRespuestaDTO> usuarios = usuarioService.listarUsuarios(pageable).map(mapper::map);
+
         return ResponseEntity.ok(pagedResourcesAssembler.toModel(usuarios));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRespuestaDTO> buscarUsuarioPorId(@PathVariable Long id) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+
         return ResponseEntity.ok(mapper.map(usuario));
     }
 
@@ -46,7 +48,15 @@ public class UsuarioController {
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@Valid @RequestBody UsuarioCompletoDTO usuarioCompletoDTO) {
         Usuario usuario = usuarioService.actualizarUsuario(usuarioCompletoDTO);
         UsuarioRespuestaDTO dto = mapper.map(usuario);
+
         return ResponseEntity.ok(dto);
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) {
+        usuarioService.bajaLogicaUsuario(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -33,7 +33,7 @@ class UsuarioRepositoryITest {
     @ExpectedDataSet(value = "usuarios-baja.json")
     void deberiaCambiarActivoAFalse_cuandoSeDaDeBaja() {
         //WHEN
-        int filasAfectadas =usuarioRepository.darBaja(10L);
+        int filasAfectadas =usuarioRepository.bajaLogica(10L);
 
         //THEN --> ver Dataset
         assertEquals(1, filasAfectadas);
@@ -42,7 +42,7 @@ class UsuarioRepositoryITest {
     @Test
     void deberiaRetornarCero_cuandoSeDaBajaUsuarioInexistente() {
         //WHEN
-        int filasAfectadas =usuarioRepository.darBaja(100L);
+        int filasAfectadas =usuarioRepository.bajaLogica(100L);
 
         //THEN
         assertEquals(0, filasAfectadas);

@@ -57,11 +57,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAll(pageable);
     }
 
-    public int bajaUsuario(Long id) {
+    public int bajaLogicaUsuario(Long id) {
         validarIdNulo(id);
         validarUsuarioBuscado(id);
 
-        return usuarioRepository.darBaja(id);
+        return usuarioRepository.bajaLogica(id);
     }
 
     private void asignarRol(Usuario usuario, String nombreRol) {

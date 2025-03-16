@@ -19,5 +19,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Modifying
     @Query(value = "UPDATE Usuario u SET u.activo=false WHERE u.id=:id")
-    int darBaja(Long id);
+    int bajaLogica(Long id);
 }

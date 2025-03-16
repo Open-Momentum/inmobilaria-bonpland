@@ -203,19 +203,19 @@ class UsuarioServiceTest {
     void deberiaDarBajaUsuario(){
         //GIVEN
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-        when(usuarioRepository.darBaja(1L)).thenAnswer(invocation -> {
+        when(usuarioRepository.bajaLogica(1L)).thenAnswer(invocation -> {
             usuario.setActivo(false);
             return 1;
         } );
 
         //WHEN
-        int filasAfectadas = usuarioService.bajaUsuario(1L);
+        int filasAfectadas = usuarioService.bajaLogicaUsuario(1L);
 
         //THEN
         assertFalse(usuario.getActivo());
         assertEquals(1, filasAfectadas);
 
-        verify(usuarioRepository).darBaja(anyLong());
+        verify(usuarioRepository).bajaLogica(anyLong());
     }
 
     private <T extends Exception> void assertThrowsWithMessage(Class<T> tClass, Executable executable, String message) {

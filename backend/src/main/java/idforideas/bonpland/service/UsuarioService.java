@@ -20,5 +20,7 @@ public interface UsuarioService {
 
     Usuario actualizarUsuario(UsuarioCompletoDTO dto);
 
+    int bajaLogicaUsuario(Long id);
+
     Page<Usuario> listarUsuarios(Pageable pageable);
 }
