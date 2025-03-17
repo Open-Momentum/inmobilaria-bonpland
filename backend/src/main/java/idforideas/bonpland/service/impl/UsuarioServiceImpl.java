@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioCompletoMapper mapper;
 
     @Override
+    @Transactional
     public Usuario guardarUsuario(UsuarioCompletoDTO dto) {
         validarCorreo(dto.getCorreo());
 
@@ -41,11 +43,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    @Override
     public Usuario buscarUsuarioPorId(Long id) {
         validarIdNulo(id);
         return validarUsuarioBuscado(id);
     }
 
+    @Override
+    @Transactional
     public Usuario actualizarUsuario(UsuarioCompletoDTO dto) {
         validarIdNulo(dto.getId());
         Usuario usuarioBuscado = validarUsuarioBuscado(dto.getId());
@@ -58,10 +63,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+
+    @Override
     public Page<Usuario> listarUsuarios(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
 
+    @Override
+    @Transactional
     public int bajaLogicaUsuario(Long id) {
         validarIdNulo(id);
         validarUsuarioBuscado(id);
