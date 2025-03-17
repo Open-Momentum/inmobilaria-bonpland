@@ -85,8 +85,8 @@ CREATE TABLE `usuarios` (
   `id` bigint NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
-  `clave` varchar(20) NOT NULL,
-  `correo` varchar(60) NOT NULL,
+  `clave` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL,
   `telefono` varchar(14) NOT NULL,
   `rol_id` bigint NOT NULL,
   `activo` tinyint NOT NULL
