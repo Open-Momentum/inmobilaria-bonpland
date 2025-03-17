@@ -36,6 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         validarCorreo(dto.getCorreo());
 
         Usuario usuario = mapper.map(dto);
+        usuario.setId(null);
         asignarRol(usuario,"usuario");
         return usuarioRepository.save(usuario);
     }
