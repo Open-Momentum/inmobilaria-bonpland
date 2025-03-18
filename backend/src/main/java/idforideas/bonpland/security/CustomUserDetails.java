@@ -17,6 +17,10 @@ public class CustomUserDetails implements UserDetails {
         this.usuario = usuario;
     }
 
+    public Long getId() {
+        return usuario.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(usuario.getRol());
@@ -51,4 +55,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+
 }
