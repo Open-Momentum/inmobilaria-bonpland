@@ -56,7 +56,7 @@ public class Usuario implements Serializable {
     private Boolean activo = true;
 
     @Basic(optional = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 

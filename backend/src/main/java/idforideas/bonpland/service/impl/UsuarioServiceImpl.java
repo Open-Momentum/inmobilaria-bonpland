@@ -14,6 +14,7 @@ import idforideas.bonpland.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final UsuarioCompletoMapper mapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -39,6 +41,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario usuario = mapper.map(dto);
         usuario.setId(null);
+        usuario.setClave(passwordEncoder.encode(dto.getClave()));
         asignarRol(usuario,"usuario");
         return usuarioRepository.save(usuario);
     }

@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioCompletoDTO implements DTO {
-    private static final String CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
+    public static final String CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
     private static final String NOMBRE_PATTERN = "^[a-zA-Z]+( [a-zA-Z]+)*$";
-    private static final String CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
+    public static final String CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
     private static final String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,10}$";
 
     private Long id;

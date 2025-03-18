@@ -4,6 +4,7 @@
  */
 package idforideas.bonpland.config;
 
+import idforideas.bonpland.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * @author Figueroa Mauro
@@ -22,6 +25,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,7 +39,8 @@ public class SecurityConfig {
                                                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                                                        .requestMatchers("/api/usuarios/**").hasAnyRole("USUARIO", "ADMIN")
                                                        .anyRequest().authenticated()
-                );
+
+                ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
