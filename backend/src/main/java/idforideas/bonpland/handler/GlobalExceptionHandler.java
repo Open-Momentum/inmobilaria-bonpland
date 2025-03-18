@@ -1,10 +1,7 @@
 
 package idforideas.bonpland.handler;
 
-import idforideas.bonpland.exception.CorreoExistenteException;
-import idforideas.bonpland.exception.RolNoEncontradoException;
-import idforideas.bonpland.exception.UsuarioNoEncontradoException;
-import idforideas.bonpland.exception.IdInexistenteException;
+import idforideas.bonpland.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -46,6 +43,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IdInexistenteException.class)
     public ResponseEntity<Map<String, Object>> handleIdInexistenteException(IdInexistenteException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(CredencialesIncorrectasException.class)
+    public ResponseEntity<Map<String, Object>> handleCredencialesIncorrectasException(CredencialesIncorrectasException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
