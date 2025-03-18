@@ -32,7 +32,7 @@ public class Rol implements Serializable, GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return this.nombre;
+        return "ROLE_" + this.nombre;
     }
 
 }

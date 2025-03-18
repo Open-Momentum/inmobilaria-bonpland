@@ -2,6 +2,7 @@ package idforideas.bonpland.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import idforideas.bonpland.config.SecurityConfig;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.IdInexistenteException;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -36,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest(controllers = UsuarioController.class)
 @ActiveProfiles("test")
-@Import(UsuarioRespuestaMapper.class)
+@Import({UsuarioRespuestaMapper.class, SecurityConfig.class})
 class UsuarioControllerTest {
     public static final String PATH_USUARIOS = "/api/usuarios";
 
@@ -57,6 +60,7 @@ class UsuarioControllerTest {
 
 
     @Test
+    @WithMockUser(username = "test", roles = "ADMIN")
     void deberiaListarUsuariosYRetornar200() throws Exception {
         //GIVEN
         lista = getUsuarios();
@@ -80,6 +84,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaRetornarListaVaciaY200() throws Exception {
         //GIVEN
         when(usuarioService.listarUsuarios(any(Pageable.class))).thenReturn(new PageImpl<>(lista, pageable, lista.size()));
@@ -96,6 +101,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaRetornarUsuarioPorIdY200_cuandoExiste() throws Exception {
         //GIVEN
         when(usuarioService.buscarUsuarioPorId(1L)).thenReturn(getUsuario());
@@ -115,6 +121,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaRetornar400buscandoPorId_cuandoNoExiste() throws Exception {
         //GIVEN
         when(usuarioService.buscarUsuarioPorId(1L)).thenThrow(new UsuarioNoEncontradoException("Usuario no encontrado"));
@@ -132,6 +139,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaActualizarUsuarioYRetornar200() throws Exception {
         //GIVEN
         UsuarioCompletoDTO dto = getUsuarioDTO();
@@ -154,6 +162,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = {"USUARIO"})
     void deberiaRetornar400ActualizandoUsuario_cuandoNoTieneId() throws Exception {
         //GIVEN
         UsuarioCompletoDTO dto = getUsuarioDTO();
@@ -166,6 +175,7 @@ class UsuarioControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(dto)))
 
+
         //THEN
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").isMap())
@@ -175,6 +185,7 @@ class UsuarioControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "test", roles = {"ADMIN"})
     void deberiaHacerBorradoLogicoPorId() throws Exception {
         //GIVEN
         Usuario usuario = getUsuario();
