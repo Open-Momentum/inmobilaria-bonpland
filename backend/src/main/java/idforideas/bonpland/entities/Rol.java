@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rol implements Serializable {
+public class Rol implements Serializable, GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -28,5 +29,10 @@ public class Rol implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
+
+    @Override
+    public String getAuthority() {
+        return this.nombre;
+    }
 
 }
