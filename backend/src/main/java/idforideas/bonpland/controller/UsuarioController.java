@@ -6,7 +6,9 @@ import idforideas.bonpland.dto.usuarios.UsuarioRespuestaDTO;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,8 @@ public class UsuarioController {
         this.mapper = mapper;
     }
 
+    @ApiResponse(responseCode = "200")
+    @Operation(summary = "Obtener lista de usuarios")
     @GetMapping
     public ResponseEntity<?> listarUsuarios(@PageableDefault(size = 10 ,sort = "nombre", page = 0)
                                                 @Schema(example = DEFAULT_PAGE)
@@ -41,6 +45,8 @@ public class UsuarioController {
         return ResponseEntity.ok(pagedResourcesAssembler.toModel(usuarios));
     }
 
+    @ApiResponse(responseCode = "200")
+    @Operation(summary = "Obtener un usuario específico por su id")
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRespuestaDTO> buscarUsuarioPorId(@PathVariable Long id) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(id);
@@ -48,7 +54,9 @@ public class UsuarioController {
         return ResponseEntity.ok(mapper.map(usuario));
     }
 
+    @Operation(summary = "Actualizar valores de un usuario específico")
     @PutMapping
+    @ApiResponse(responseCode = "200")
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@Valid @RequestBody UsuarioCompletoDTO usuarioCompletoDTO) {
         Usuario usuario = usuarioService.actualizarUsuario(usuarioCompletoDTO);
         UsuarioRespuestaDTO dto = mapper.map(usuario);
@@ -57,6 +65,8 @@ public class UsuarioController {
 
     }
 
+    @Operation(summary = "Borrar un usuario específico")
+    @ApiResponse(responseCode = "204")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) {
         usuarioService.bajaLogicaUsuario(id);
