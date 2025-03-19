@@ -7,6 +7,7 @@ import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.dto.auth.LoginDTO;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.exception.CorreoExistenteException;
+import idforideas.bonpland.exception.CredencialesIncorrectasException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
 import idforideas.bonpland.security.CustomUserDetailService;
 import idforideas.bonpland.security.CustomUserDetails;
@@ -153,23 +154,44 @@ class AuthControllerTest {
     class LoginTest {
 
         @Test
-        void deberiaAutenticarseConCredencialesValidas() throws Exception {
+        void deberiaAutenticarse_conCredencialesValidas() throws Exception {
             //GIVEN
             LoginDTO loginRequest = new LoginDTO("test@mail.com", "clave123");
 
+            Authentication authToken = new UsernamePasswordAuthenticationToken(loginRequest.correo(), loginRequest.clave());
+
             when(authMock.getPrincipal()).thenReturn(new CustomUserDetails(getUsuario()));
-            when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authMock);
+            when(authenticationManager.authenticate(authToken)).thenReturn(authMock);
             when(jwtService.generarToken(any(CustomUserDetails.class))).thenReturn("fakeToken123");
 
             //WHEN
             mockMvc.perform(post(PATH_LOGIN).contentType(MediaType.APPLICATION_JSON)
                                     .content(objectMapper.writeValueAsString(loginRequest)))
 
-            //THEN
+                    //THEN
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$").isMap())
                     .andExpect(jsonPath("$.Token").value("fakeToken123"));
         }
-    }
 
+        @Test
+        void deberiaLanzarException_conCredencialesInvalidas() throws Exception {
+            //GIVEN
+            LoginDTO loginRequest = new LoginDTO("mail_incorrecto@mail.com", "clave.incorrecta");
+            Authentication authToken = new UsernamePasswordAuthenticationToken(loginRequest.correo(), loginRequest.clave());
+
+            when(authenticationManager.authenticate(authToken)).thenThrow(new CredencialesIncorrectasException("Credenciales incorrectas"));
+
+            //WHEN
+            mockMvc.perform(post(PATH_LOGIN).contentType(MediaType.APPLICATION_JSON)
+                                    .content(objectMapper.writeValueAsString(loginRequest)))
+
+                    //THEN
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.error").isString())
+                    .andExpect(jsonPath("$.error").value("Credenciales incorrectas"));
+        }
+    }
 }
+
+
