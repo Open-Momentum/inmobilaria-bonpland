@@ -8,6 +8,8 @@ import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
+import idforideas.bonpland.security.CustomUserDetailService;
+import idforideas.bonpland.security.JwtService;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,10 @@ import org.junit.jupiter.api.Test;
 import static idforideas.bonpland.utils.TestUtil.*;
 import static org.mockito.Mockito.*;
 
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -49,7 +53,14 @@ class UsuarioControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private UsuarioService usuarioService;
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    CustomUserDetailService customUserDetailService;
+    @MockitoBean
+    private JwtService jwtService;
+
+
 
     @BeforeEach
     void init() {

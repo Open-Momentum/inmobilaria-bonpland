@@ -6,6 +6,8 @@ import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.exception.CorreoExistenteException;
 import idforideas.bonpland.mapper.impl.UsuarioRespuestaMapper;
+import idforideas.bonpland.security.CustomUserDetailService;
+import idforideas.bonpland.security.JwtService;
 import idforideas.bonpland.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +46,10 @@ class AuthControllerTest {
     private UsuarioService usuarioService;
     @Autowired
     private ObjectMapper objectMapper;
+    @MockitoBean
+    CustomUserDetailService customUserDetailService;
+    @MockitoBean
+    private JwtService jwtService;
 
     @Test
     void deberiaCrearUsuarioYRetornar201() throws Exception {
