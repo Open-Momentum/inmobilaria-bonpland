@@ -3,6 +3,7 @@ package idforideas.bonpland.security;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.repository.UsuarioRepository;
+import jakarta.servlet.ServletException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

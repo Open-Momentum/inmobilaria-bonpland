@@ -3,10 +3,7 @@ package idforideas.bonpland.service.impl;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
-import idforideas.bonpland.exception.CorreoExistenteException;
-import idforideas.bonpland.exception.RolNoEncontradoException;
-import idforideas.bonpland.exception.UsuarioNoEncontradoException;
-import idforideas.bonpland.exception.IdInexistenteException;
+import idforideas.bonpland.exception.*;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -58,11 +55,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         validarIdNulo(dto.getId());
         Usuario usuarioBuscado = validarUsuarioBuscado(dto.getId());
         if (!usuarioBuscado.getCorreo().equals(dto.getCorreo())) {
-        validarCorreo(dto.getCorreo());
+            throw new CambioCorreoException("No puedes cambiar el correo de tu cuenta");
         }
 
         Usuario usuario = mapper.map(dto);
         usuario.setRol(usuarioBuscado.getRol());
+        usuario.setClave(passwordEncoder.encode(dto.getClave()));
+
         return usuarioRepository.save(usuario);
     }
 

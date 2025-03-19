@@ -1,9 +1,8 @@
 package idforideas.bonpland.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,11 @@ public class JwtService {
 
     public boolean esTokenValido(String token, UserDetails userDetails) {
         final String username = extraerCorreo(token);
-        return username.equals(userDetails.getUsername()) && !esTokenExpirado(token);
+        try {
+            return username.equals(userDetails.getUsername()) && !esTokenExpirado(token);
+        } catch (JwtException ex) {
+            return false;
+        }
     }
 
     public String extraerCorreo(String token) {
@@ -51,11 +54,20 @@ public class JwtService {
     }
 
     private <T> T extraerClaims(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = Jwts.parserBuilder()
-                                .setSigningKey(SECRET_KEY)
-                                .build()
-                                .parseClaimsJws(token)
-                                .getBody();
-        return claimsResolver.apply(claims);
+        try {
+            Claims claims = Jwts.parserBuilder()
+                                    .setSigningKey(SECRET_KEY)
+                                    .build()
+                                    .parseClaimsJws(token)
+                                    .getBody();
+            return claimsResolver.apply(claims);
+        } catch (ExpiredJwtException e) {
+            throw new JwtException("El token ha expirado", e);
+        } catch (
+                  SignatureException e) {
+            throw new JwtException("Firma inválida del token", e);
+        } catch (JwtException e) {
+            throw new JwtException("Token inválido", e);
+        }
     }
 }
