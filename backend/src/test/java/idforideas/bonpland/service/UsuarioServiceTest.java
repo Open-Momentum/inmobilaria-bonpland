@@ -3,10 +3,7 @@ package idforideas.bonpland.service;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
-import idforideas.bonpland.exception.CorreoExistenteException;
-import idforideas.bonpland.exception.IdInexistenteException;
-import idforideas.bonpland.exception.RolNoEncontradoException;
-import idforideas.bonpland.exception.UsuarioNoEncontradoException;
+import idforideas.bonpland.exception.*;
 import idforideas.bonpland.mapper.impl.UsuarioCompletoMapper;
 import idforideas.bonpland.repository.RolRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -185,6 +182,20 @@ class UsuarioServiceTest {
         verify(usuarioRepository, never()).save(any(Usuario.class));
         verify(usuarioRepository, never()).findById(anyLong());
     }
+
+@Test
+void deberiaLanzarExceptionConCorreoDiferente_cuandoSeActualiza(){
+    //GIVEN
+    dto.setId(1L);
+    dto.setCorreo("nuevo_correo@gmail.com");
+    when(usuarioRepository.findById(anyLong())).thenReturn(Optional.of(getUsuario()));
+
+    //WHEN
+    Executable executable = () -> usuarioService.actualizarUsuario(dto);
+
+    //THEN
+    assertThrowsWithMessage(CambioCorreoException.class,executable,"No puedes cambiar el correo de tu cuenta");
+}
 
     @Test
     void deberiaListarUsuarios_conPaginacion(){
