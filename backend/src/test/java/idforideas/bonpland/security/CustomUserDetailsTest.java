@@ -21,6 +21,8 @@ class CustomUserDetailsTest {
 
         //THEN
         assertNotNull(customUserDetails.getId());
+        assertEquals(usuario.getCorreo(), customUserDetails.getUsername());
+        assertEquals(usuario.getClave(), customUserDetails.getPassword());
         assertTrue(customUserDetails.isAccountNonExpired());
         assertTrue(customUserDetails.isEnabled());
         assertTrue(customUserDetails.isCredentialsNonExpired());
