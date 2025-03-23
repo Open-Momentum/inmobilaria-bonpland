@@ -1,17 +1,20 @@
 package idforideas.bonpland.security;
 
 import idforideas.bonpland.entities.Rol;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 import java.util.Collections;
 import java.util.List;
 
+import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,15 +24,15 @@ class JwtServiceTest {
 
     @InjectMocks
     private JwtService jwtService;
-    @Mock
-    CustomUserDetails customUserDetails;
-    Rol rol = new Rol(1L,"USUARIO");
+    private CustomUserDetails customUserDetails;
+
+    @BeforeEach
+    void init() {
+        customUserDetails = new CustomUserDetails(getUsuario());
+    }
+
     @Test
     void deberiaGenerarUnToken() {
-        //GIVEN
-        when(customUserDetails.getUsername()).thenReturn("CoreoTest@mail.com");
-        when(customUserDetails.getId()).thenReturn(1L);
-
         //WHEN
         String token = jwtService.generarToken(customUserDetails);
 
@@ -37,4 +40,5 @@ class JwtServiceTest {
         assertNotNull(token);
         assertFalse(token.isEmpty());
     }
+
 }
