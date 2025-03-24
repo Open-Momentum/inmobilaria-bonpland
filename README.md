@@ -6,6 +6,7 @@ Brego thirsty prey farthest stroke pantry lot. Wilds dinner plant cheated! Last 
 `<lorem ipsum>`
 
 ## Equipo
+
 <table align="center">
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/116227485?v=4" width="100"></td>
