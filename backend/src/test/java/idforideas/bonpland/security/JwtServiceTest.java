@@ -41,4 +41,14 @@ class JwtServiceTest {
         assertFalse(token.isEmpty());
     }
 
+    @Test
+    void deberiaGenerarElMismoTokenConElMismoInput() {
+        //WHEN
+        String token1 = jwtService.generarToken(customUserDetails);
+        String token2 = jwtService.generarToken(customUserDetails);
+
+        //THEN
+        assertEquals(token1, token2);
+    }
+
 }
