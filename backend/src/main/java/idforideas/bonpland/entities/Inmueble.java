@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "inmuebles")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Inmueble implements Serializable {
 
     private static final long serialVersionUID = 1L;
