@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import { Building, Eye, EyeOff } from 'lucide-react'
+import Link from 'next/link'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Separator } from '@/components/ui/separator'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Separator } from '@/components/ui/separator'
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)

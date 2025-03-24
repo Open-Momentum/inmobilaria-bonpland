@@ -3,6 +3,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import { Providers } from '@/components/providers'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -15,8 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Inmobilaria Bonpland',
-    default: 'Inmobilaria Bonpland',
+    template: '%s | Inmobiliaria Bonpland',
+    default: 'Inmobiliaria Bonpland',
   },
   authors: [{ name: 'Eduardo', url: 'https://github.com/MrRedu' }],
   // creator: '',
@@ -30,11 +32,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="es"
+      //  suppressHydrationWarning
+    >
       <body
+        // suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

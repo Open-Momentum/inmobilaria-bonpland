@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import { Building, Eye, EyeOff } from 'lucide-react'
+import Link from 'next/link'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 
 export default function SignInPage() {
