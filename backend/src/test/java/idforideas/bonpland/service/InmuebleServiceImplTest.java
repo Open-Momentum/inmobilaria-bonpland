@@ -30,4 +30,13 @@ class InmuebleServiceImplTest {
     @InjectMocks
     InmuebleServiceImpl inmuebleService;
 
+    @Test
+    void deberiaLanzarException_cuandoLosDatosSonNulos() {
+        //WHEN
+        Executable executable = () -> inmuebleService.guardarInmueble(null);
+
+        //THEN
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, executable);
+        assertEquals("Inmueble no puede ser nulo", e.getMessage());
+    }
 }
