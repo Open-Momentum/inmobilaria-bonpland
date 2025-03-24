@@ -1,7 +1,6 @@
 package idforideas.bonpland.security;
 
-import com.mysql.cj.jdbc.Blob;
-import idforideas.bonpland.entities.Rol;
+import idforideas.bonpland.entities.Usuario;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,19 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 import javax.crypto.SecretKey;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static idforideas.bonpland.utils.TestUtil.getUsuario;
-import static org.mockito.Mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +29,6 @@ class JwtServiceTest {
     private JwtService jwtService;
     private CustomUserDetails customUserDetails;
     private String tokenFirmaInvalida;
-
 
 
     @BeforeEach
@@ -66,7 +59,7 @@ class JwtServiceTest {
     }
 
     @Test
-    void deberiaValidarTokenCorrecto(){
+    void deberiaValidarTokenCorrecto() {
         //GIVEN
         String token = jwtService.generarToken(customUserDetails);
 
@@ -78,12 +71,12 @@ class JwtServiceTest {
     }
 
     @Test
-    void deberiaValidarTokenExpirado(){
+    void deberiaValidarTokenExpirado() {
         //GIVEN
-        String token = jwtService.generarToken(customUserDetails,-1L);
+        String token = jwtService.generarToken(customUserDetails, -1L);
 
         //WHEN
-        Executable executable = ()-> jwtService.esTokenValido(token, customUserDetails);
+        Executable executable = () -> jwtService.esTokenValido(token, customUserDetails);
 
         //THEN
         JwtException e = assertThrows(JwtException.class, executable);
@@ -92,15 +85,64 @@ class JwtServiceTest {
 
 
     @Test
-    void deberiaValidarTokenConFirmaInvalida(){
+    void deberiaValidarTokenConFirmaInvalida() {
         //WHEN
-        Executable executable = ()-> jwtService.esTokenValido(tokenFirmaInvalida, customUserDetails);
+        Executable executable = () -> jwtService.esTokenValido(tokenFirmaInvalida, customUserDetails);
 
         //THEN
         JwtException e = assertThrows(JwtException.class, executable);
         assertEquals("Firma inválida del token", e.getMessage());
     }
 
+
+    @Test
+    void deberiaValidarTokenInvalido() {
+        //GIVEN
+        String token = "Token invalido";
+
+        //WHEN
+        Executable executable = () -> jwtService.esTokenValido(token, customUserDetails);
+
+        //THEN
+        JwtException e = assertThrows(JwtException.class, executable);
+        assertEquals("Token inválido", e.getMessage());
+    }
+
+    @Test
+    void deberiaValidarTokenDeOtroUsuario() {
+        //GIVEN
+        String token = jwtService.generarToken(customUserDetails);
+        Usuario usuario = getUsuario();
+        usuario.setCorreo("OtroCorreo@mail.com");
+        CustomUserDetails otroUserDetails = new CustomUserDetails(usuario);
+
+        //WHEN
+        boolean resultado = jwtService.esTokenValido(token, otroUserDetails);
+
+        //THEN
+        assertFalse(resultado);
+    }
+
+    @Test
+    void deberiaValidarTokenDeOtroUsuarioYElTokenExpirado() {
+        //GIVEN
+        String token = jwtService.generarToken(customUserDetails, -1L);
+        Usuario usuario = getUsuario();
+        usuario.setCorreo("OtroCorreo@mail.com");
+        CustomUserDetails otroUserDetails = new CustomUserDetails(usuario);
+        AtomicBoolean esValido = new AtomicBoolean(false);
+
+        //WHEN
+        Executable executable = () -> {
+            esValido.set(jwtService.esTokenValido(token, otroUserDetails));
+        };
+
+        //THEN
+        JwtException e = assertThrows(JwtException.class, executable);
+        assertEquals("El token ha expirado", e.getMessage());
+        assertFalse(esValido.get());
+
+    }
 
 
     private String generarTokenFirmaInvalida() {

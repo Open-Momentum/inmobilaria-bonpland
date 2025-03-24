@@ -41,7 +41,7 @@ public class JwtService {
 
 
     public boolean esTokenValido(String token, UserDetails userDetails) {
-        final String username = extraerCorreo(token);
+        String username = extraerCorreo(token);
         try {
             return username.equals(userDetails.getUsername()) && !esTokenExpirado(token);
         } catch (JwtException ex) {
