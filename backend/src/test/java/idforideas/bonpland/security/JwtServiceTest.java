@@ -34,10 +34,14 @@ class JwtServiceTest {
     @InjectMocks
     private JwtService jwtService;
     private CustomUserDetails customUserDetails;
+    private String tokenFirmaInvalida;
+
+
 
     @BeforeEach
     void init() {
         customUserDetails = new CustomUserDetails(getUsuario());
+        tokenFirmaInvalida = generarTokenFirmaInvalida();
     }
 
 
@@ -84,5 +88,27 @@ class JwtServiceTest {
         //THEN
         JwtException e = assertThrows(JwtException.class, executable);
         assertEquals("El token ha expirado", e.getMessage());
+    }
+
+
+    @Test
+    void deberiaValidarTokenConFirmaInvalida(){
+        //WHEN
+        Executable executable = ()-> jwtService.esTokenValido(tokenFirmaInvalida, customUserDetails);
+
+        //THEN
+        JwtException e = assertThrows(JwtException.class, executable);
+        assertEquals("Firma inválida del token", e.getMessage());
+    }
+
+
+
+    private String generarTokenFirmaInvalida() {
+        return Jwts.builder()
+                .setSubject(customUserDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 36000000))
+                .signWith(SECRET_KEY)
+                .compact();
     }
 }
