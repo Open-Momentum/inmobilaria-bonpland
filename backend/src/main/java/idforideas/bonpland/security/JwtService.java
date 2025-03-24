@@ -42,11 +42,8 @@ public class JwtService {
 
     public boolean esTokenValido(String token, UserDetails userDetails) {
         String username = extraerCorreo(token);
-        try {
-            return username.equals(userDetails.getUsername()) && !esTokenExpirado(token);
-        } catch (JwtException ex) {
-            return false;
-        }
+
+        return username.equals(userDetails.getUsername()) && !esTokenExpirado(token);
     }
 
     public String extraerCorreo(String token) {
@@ -75,7 +72,4 @@ public class JwtService {
         }
     }
 
-    public static SecretKey getSecretKey() {
-        return SECRET_KEY;
-    }
 }
