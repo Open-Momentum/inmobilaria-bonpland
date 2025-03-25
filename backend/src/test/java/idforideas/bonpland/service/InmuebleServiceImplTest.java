@@ -141,4 +141,18 @@ class InmuebleServiceImplTest {
                 3, 4, 1, 1, 100, TipoPropiedad.CASA);
     }
 
+    @Test
+    void deberiaActualizarInmueble(){
+        //GIVEN
+        when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.ofNullable(usuario));
+        when(inmuebleRepository.findById(1L)).thenReturn(Optional.of(new Inmueble()));
+
+        //WHEN
+        inmuebleService.actualizarInmueble(dto);
+
+
+        //THEN
+        verify(inmuebleRepository).save(any(Inmueble.class));
+        verify(inmuebleRepository).findById(1L);
+    }
 }
