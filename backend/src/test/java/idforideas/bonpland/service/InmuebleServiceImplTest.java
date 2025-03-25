@@ -36,6 +36,19 @@ class InmuebleServiceImplTest {
     InmuebleMapper mapper;
 
     @Test
+    void deberiaGuardarInmueble(){
+        //GIVEN
+        InmuebleDTO dto = new InmuebleDTO(1L, "descripcion", 1000, "Direccion", 1999,
+                3, 4, 1, 1, 100, TipoPropiedad.CASA);
+
+        //WHEN
+        inmuebleService.guardarInmueble(dto);
+
+        //THEN
+        verify(inmuebleRepository).save(any(Inmueble.class));
+    }
+
+    @Test
     void deberiaLanzarException_cuandoLosDatosSonNulos() {
         //WHEN
         Executable executable = () -> inmuebleService.guardarInmueble(null);
@@ -61,4 +74,6 @@ class InmuebleServiceImplTest {
         assertNull(capturado.getId());
         assertEquals("descripcion", capturado.getDescripcion());
     }
+
+
 }
