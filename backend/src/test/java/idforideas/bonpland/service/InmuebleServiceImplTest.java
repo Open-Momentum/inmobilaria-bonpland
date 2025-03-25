@@ -3,6 +3,7 @@ package idforideas.bonpland.service;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.enumerations.TipoPropiedad;
+import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.service.impl.InmuebleServiceImpl;
 
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
@@ -30,6 +32,8 @@ class InmuebleServiceImplTest {
 
     @InjectMocks
     InmuebleServiceImpl inmuebleService;
+    @Spy
+    InmuebleMapper mapper;
 
     @Test
     void deberiaLanzarException_cuandoLosDatosSonNulos() {
@@ -42,7 +46,7 @@ class InmuebleServiceImplTest {
     }
 
     @Test
-    void deberiaSetearElIdEnNuloAntesDeGuardar(){
+    void deberiaSetearElIdEnNuloAntesDeGuardar() {
         //GIVEN
         InmuebleDTO dto = new InmuebleDTO(1L, "descripcion", 1000, "Direccion", 1999,
                 3, 4, 1, 1, 100, TipoPropiedad.CASA);
