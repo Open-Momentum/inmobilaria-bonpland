@@ -43,9 +43,7 @@ public record InmuebleDTO(
 
         @NotNull
         @Size(min = 1, max = 20)
-        TipoPropiedad tipoPropiedad,
-
-        List<Foto> fotos
+        TipoPropiedad tipoPropiedad
 
 ) {
 }
