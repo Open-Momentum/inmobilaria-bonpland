@@ -2,6 +2,7 @@ package idforideas.bonpland.service.impl;
 
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
+import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.service.InmuebleService;
 import lombok.AllArgsConstructor;
@@ -16,13 +17,15 @@ import org.springframework.stereotype.Service;
 public class InmuebleServiceImpl implements InmuebleService {
     private final InmuebleRepository repository;
 
+    private final InmuebleMapper mapper;
+
     @Override
     public Inmueble guardarInmueble(InmuebleDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Inmueble no puede ser nulo");
         }
-        Inmueble inmueble = new Inmueble(null, dto.descripcion(), dto.codigo(), dto.direccion(), dto.codigoPostal(),
-                dto.cantAmbientes(), dto.cantDormi(), dto.cantBanos(), dto.cantCochera(), dto.metrosCuadrados(), dto.tipoPropiedad(),null, null);
+        Inmueble inmueble = mapper.map(dto);
+        inmueble.setId(null);
         return repository.save(inmueble);
     }
 
