@@ -14,14 +14,16 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class InmuebleServiceImpl implements InmuebleService {
-    private InmuebleRepository repository;
+    private final InmuebleRepository repository;
 
     @Override
     public Inmueble guardarInmueble(InmuebleDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("Inmueble no puede ser nulo");
         }
-        return repository.save(new Inmueble());
+        Inmueble inmueble = new Inmueble(null, dto.descripcion(), dto.codigo(), dto.direccion(), dto.codigoPostal(),
+                dto.cantAmbientes(), dto.cantDormi(), dto.cantBanos(), dto.cantCochera(), dto.metrosCuadrados(), dto.tipoPropiedad(), dto.fotos(), null);
+        return repository.save(inmueble);
     }
 
     @Override
