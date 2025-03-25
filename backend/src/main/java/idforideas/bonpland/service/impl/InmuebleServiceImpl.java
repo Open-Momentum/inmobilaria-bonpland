@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author Figueroa Mauro
  */
@@ -36,7 +38,8 @@ public class InmuebleServiceImpl implements InmuebleService {
 
     @Override
     public Inmueble buscarInmueblePorId(Long id) {
-        return null;
+        Optional<Inmueble> inmueble = repository.findById(id);
+        return inmueble.orElse(null);
     }
 
     @Override
