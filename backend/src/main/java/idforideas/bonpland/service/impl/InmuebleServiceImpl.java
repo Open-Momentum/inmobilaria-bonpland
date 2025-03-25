@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class InmuebleServiceImpl implements InmuebleService {
     private CustomUserDetailService customUserDetailService;
 
     @Override
+    @Transactional
     public Inmueble guardarInmueble(InmuebleDTO dto) {
         String correo = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByCorreo(correo)
@@ -57,11 +59,29 @@ public class InmuebleServiceImpl implements InmuebleService {
     }
 
     @Override
+    @Transactional
     public Inmueble actualizarInmueble(InmuebleDTO dto) {
-        return null;
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
+
+        if (dto == null) {
+            throw new IllegalArgumentException("Inmueble no puede ser nulo");
+        }
+
+        if (dto.id() == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo para realizar esta acción");
+        }
+
+        Inmueble inmuebleEncontrado = inmuebleRepository.findById(dto.id())
+                .orElseThrow(() -> new InmuebleNoEncontradoException("Inmueble no encontrado"));
+        inmuebleEncontrado = mapper.map(dto);
+        inmuebleEncontrado.setUsuario(usuario);
+        return inmuebleRepository.save(inmuebleEncontrado);
     }
 
     @Override
+    @Transactional
     public int eliminarInmueble(Long id) {
         return 0;
     }
