@@ -21,6 +21,8 @@ import static org.mockito.Mockito.*;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 /**
  * @author Figueroa Mauro
  */
@@ -56,6 +58,8 @@ class InmuebleServiceImplTest {
         //THEN
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, executable);
         assertEquals("Inmueble no puede ser nulo", e.getMessage());
+
+        verify(inmuebleRepository,never()).save(any());
     }
 
     @Test
@@ -73,7 +77,23 @@ class InmuebleServiceImplTest {
         Inmueble capturado = captor.getValue();
         assertNull(capturado.getId());
         assertEquals("descripcion", capturado.getDescripcion());
+
+        verify(inmuebleRepository).save(any(Inmueble.class));
     }
 
+    @Test
+    void deberiaBuscarPorId(){
+        //GIVEN
+        Long id = 1L;
+        when(inmuebleRepository.findById(id)).thenReturn(Optional.of(new Inmueble()));
+
+        //WHEN
+        Inmueble inmueble = inmuebleService.buscarInmueblePorId(id);
+
+        //THEN
+        assertNotNull(inmueble);
+
+        verify(inmuebleRepository).findById(1L);
+    }
 
 }
