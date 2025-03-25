@@ -45,7 +45,7 @@ class InmuebleServiceImplTest {
     void deberiaSetearElIdEnNuloAntesDeGuardar(){
         //GIVEN
         InmuebleDTO dto = new InmuebleDTO(1L, "descripcion", 1000, "Direccion", 1999,
-                3, 4, 1, 1, 100, TipoPropiedad.CASA, null);
+                3, 4, 1, 1, 100, TipoPropiedad.CASA);
 
         //WHEN
         inmuebleService.guardarInmueble(dto);

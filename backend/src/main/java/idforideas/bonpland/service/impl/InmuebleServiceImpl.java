@@ -22,7 +22,7 @@ public class InmuebleServiceImpl implements InmuebleService {
             throw new IllegalArgumentException("Inmueble no puede ser nulo");
         }
         Inmueble inmueble = new Inmueble(null, dto.descripcion(), dto.codigo(), dto.direccion(), dto.codigoPostal(),
-                dto.cantAmbientes(), dto.cantDormi(), dto.cantBanos(), dto.cantCochera(), dto.metrosCuadrados(), dto.tipoPropiedad(), dto.fotos(), null);
+                dto.cantAmbientes(), dto.cantDormi(), dto.cantBanos(), dto.cantCochera(), dto.metrosCuadrados(), dto.tipoPropiedad(),null, null);
         return repository.save(inmueble);
     }
 
