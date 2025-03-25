@@ -3,6 +3,7 @@ package idforideas.bonpland.service;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.enumerations.TipoPropiedad;
+import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.service.impl.InmuebleServiceImpl;
@@ -94,6 +95,20 @@ class InmuebleServiceImplTest {
         assertNotNull(inmueble);
 
         verify(inmuebleRepository).findById(1L);
+    }
+
+    @Test
+    void deberiaLanzarException_cuandoNoEncuentraElInmueble(){
+        //GIVEN
+        Long id = 1L;
+        when(inmuebleRepository.findById(id)).thenReturn(Optional.empty());
+
+        //WHEN
+        Executable executable = () -> inmuebleService.buscarInmueblePorId(id);
+
+        //THEN
+        InmuebleNoEncontradoException e = assertThrows(InmuebleNoEncontradoException.class, executable);
+        assertEquals("Inmueble no encontrado", e.getMessage());
     }
 
 }

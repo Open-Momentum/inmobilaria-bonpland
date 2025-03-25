@@ -2,6 +2,7 @@ package idforideas.bonpland.service.impl;
 
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
+import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.service.InmuebleService;
@@ -39,9 +40,8 @@ public class InmuebleServiceImpl implements InmuebleService {
     @Override
     public Inmueble buscarInmueblePorId(Long id) {
         Optional<Inmueble> inmueble = repository.findById(id);
-        return inmueble.orElse(null);
+        return inmueble.orElseThrow(()-> new InmuebleNoEncontradoException("Inmueble no encontrado"));
     }
-
     @Override
     public Inmueble actualizarInmueble(InmuebleDTO dto) {
         return null;
