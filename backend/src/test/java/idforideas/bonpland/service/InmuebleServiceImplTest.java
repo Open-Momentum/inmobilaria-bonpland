@@ -27,12 +27,17 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -104,6 +109,23 @@ class InmuebleServiceImplTest {
         assertEquals("descripcion", capturado.getDescripcion());
 
         verify(inmuebleRepository).save(any(Inmueble.class));
+    }
+
+    @Test
+    void deberiaListarInmuebles(){
+        //GIVEN
+        List<Inmueble> list = List.of(new Inmueble(), new Inmueble(), new Inmueble(), new Inmueble());
+        Pageable pageable = PageRequest.of(0, 10);
+        when(inmuebleRepository.findAll(pageable)).thenReturn(new PageImpl<>(list, pageable, list.size()));
+
+        //WHEN
+        Page<Inmueble> inmuebles = inmuebleService.listarInmuebles(pageable);
+
+        //THEN
+        assertEquals(4, inmuebles.getTotalElements());
+        assertEquals(1, inmuebles.getTotalPages());
+
+        verify(inmuebleRepository).findAll(any(Pageable.class));
     }
 
     @Test
