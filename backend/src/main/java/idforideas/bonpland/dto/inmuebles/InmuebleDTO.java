@@ -18,9 +18,6 @@ public record InmuebleDTO (
         String descripcion,
 
         @NotNull
-        int codigo,
-
-        @NotNull
         @Size(min = 1, max = 500)
         String direccion,
 
@@ -40,7 +37,7 @@ public record InmuebleDTO (
         int cantCochera,
 
         @NotNull
-        double metrosCuadrados,
+        int metrosCuadrados,
 
         @NotNull
         TipoPropiedad tipoPropiedad

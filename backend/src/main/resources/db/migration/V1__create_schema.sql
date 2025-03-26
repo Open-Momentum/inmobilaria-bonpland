@@ -37,7 +37,7 @@ CREATE TABLE `inmobiliarias` (
 CREATE TABLE `inmuebles` (
   `id` bigint NOT NULL,
   `descripcion` varchar(500) NOT NULL,
-  `codigo` int NOT NULL,
+  `codigo` varchar(50) NOT NULL,
   `direccion` varchar(500) NOT NULL,
   `codigo_postal` int NOT NULL,
   `cant_ambientes` int NOT NULL,

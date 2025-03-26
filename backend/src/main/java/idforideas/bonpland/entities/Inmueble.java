@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "inmuebles")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Inmueble implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,18 +30,16 @@ public class Inmueble implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
     @Column(name = "descripcion")
     private String descripcion;
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "codigo",unique = true)
-    private int codigo;
+    private String codigo;
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
     @Column(name = "direccion")
     private String direccion;
 
@@ -74,7 +71,7 @@ public class Inmueble implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "metros_cuadrados")
-    private double metrosCuadrados;
+    private int metrosCuadrados;
 
     @Basic(optional = false)
     @NotNull
@@ -88,5 +85,22 @@ public class Inmueble implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuario;
+
+    public Inmueble(Long id, String descripcion, String direccion, int codigoPostal, int cantAmbientes, int cantDormi,
+                    int cantBanos, int cantCochera, int metrosCuadrados, TipoPropiedad tipoPropiedad,
+                    List<Foto> fotos, Usuario usuario) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.direccion = direccion;
+        this.codigoPostal = codigoPostal;
+        this.cantAmbientes = cantAmbientes;
+        this.cantDormi = cantDormi;
+        this.cantBanos = cantBanos;
+        this.cantCochera = cantCochera;
+        this.metrosCuadrados = metrosCuadrados;
+        this.tipoPropiedad = tipoPropiedad;
+        this.fotos = fotos;
+        this.usuario = usuario;
+    }
 
 }

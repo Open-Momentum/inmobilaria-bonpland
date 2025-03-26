@@ -1,8 +1,10 @@
 package idforideas.bonpland.controller;
 
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
+import idforideas.bonpland.dto.inmuebles.InmuebleResponseDTO;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
+import idforideas.bonpland.mapper.impl.InmuebleRespuestaMapper;
 import idforideas.bonpland.service.InmuebleService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,13 +25,13 @@ import java.net.URI;
 public class InmuebleController {
 
     private final InmuebleService inmuebleService;
-    private final InmuebleMapper mapper;
+    private final InmuebleRespuestaMapper mapper;
 
 
     @PostMapping
-    public ResponseEntity<InmuebleDTO> crearInmueble(@Valid @RequestBody InmuebleDTO inmuebleDTO) {
+    public ResponseEntity<InmuebleResponseDTO> crearInmueble(@Valid @RequestBody InmuebleDTO inmuebleDTO) {
         Inmueble inmueble = inmuebleService.guardarInmueble(inmuebleDTO);
-        InmuebleDTO dto =mapper.map(inmueble);
+        InmuebleResponseDTO dto = mapper.map(inmueble);
 
         return ResponseEntity.created(buildURI(inmueble.getId()))
                 .body(dto);

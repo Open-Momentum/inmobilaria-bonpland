@@ -176,7 +176,7 @@ class InmuebleServiceImplTest {
     @Test
     void deberiaEliminarInmueble_conUsuarioLogueado() {
         //GIVEN
-        Inmueble inmueble = new Inmueble(1L, "test", 1000, "test",
+        Inmueble inmueble = new Inmueble(1L, "test", "test",
                 1899, 1, 2, 3, 4,
                 100, TipoPropiedad.CASA, null, usuario);
         when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.ofNullable(usuario));

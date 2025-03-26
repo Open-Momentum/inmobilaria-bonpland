@@ -49,7 +49,7 @@ public class TestUtil {
     }
 
     public static @NotNull InmuebleDTO getInmuebleDto() {
-        return new InmuebleDTO(1L, "descripcion", 1000, "direccion", 1999,
+        return new InmuebleDTO(1L, "descripcion", "direccion", 1999,
                 3, 4, 1, 1, 100, TipoPropiedad.CASA);
     }
 }

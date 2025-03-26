@@ -11,6 +11,7 @@ import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.security.CustomUserDetailService;
 import idforideas.bonpland.service.InmuebleService;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -41,9 +45,11 @@ public class InmuebleServiceImpl implements InmuebleService {
         Inmueble inmueble = mapper.map(dto);
         inmueble.setId(null);
         inmueble.setUsuario(usuario);
+        inmueble.setCodigo(crearCodigo(inmueble));
 
         return inmuebleRepository.save(inmueble);
     }
+
 
     @Override
     public Page<Inmueble> listarInmuebles(Pageable pageable) {
@@ -109,5 +115,28 @@ public class InmuebleServiceImpl implements InmuebleService {
         if (dto == null) {
             throw new IllegalArgumentException("Inmueble no puede ser nulo");
         }
+    }
+
+
+    private @NotNull String crearCodigo(Inmueble inmueble) {
+        StringBuilder st = new StringBuilder();
+        String tipo = inmueble.getTipoPropiedad().name().substring(0, 2);
+        Long id = inmueble.getUsuario().getId();
+
+        String fechaFormateada = formatearFecha();
+
+        return st.append(tipo)
+                .append("-")
+                .append(id)
+                .append("-")
+                .append(fechaFormateada)
+                .toString();
+
+    }
+
+    private String formatearFecha() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+        return localDateTime.format(formatter);
     }
 }

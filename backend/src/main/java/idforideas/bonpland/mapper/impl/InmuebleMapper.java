@@ -15,7 +15,6 @@ public class InmuebleMapper implements MapperDoble<Inmueble, InmuebleDTO> {
     public Inmueble map(InmuebleDTO dto) {
         return new Inmueble(dto.id(),
                 dto.descripcion(),
-                dto.codigo(),
                 dto.direccion(),
                 dto.codigoPostal(),
                 dto.cantAmbientes(),
@@ -32,7 +31,6 @@ public class InmuebleMapper implements MapperDoble<Inmueble, InmuebleDTO> {
     public InmuebleDTO map(Inmueble entidad) {
         return new InmuebleDTO(entidad.getId(),
                 entidad.getDescripcion(),
-                entidad.getCodigo(),
                 entidad.getDireccion(),
                 entidad.getCodigoPostal(),
                 entidad.getCantAmbientes(),
