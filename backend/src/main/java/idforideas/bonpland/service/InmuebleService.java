@@ -14,5 +14,5 @@ public interface InmuebleService {
 
     Inmueble actualizarInmueble(InmuebleDTO dto);
 
-    int eliminarInmueble(Long id);
+    void eliminarInmueble(Long id);
 }

@@ -13,6 +13,7 @@ import idforideas.bonpland.service.impl.InmuebleServiceImpl;
 import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.unibo.tuprolog.solve.stdlib.primitive.Op;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ class InmuebleServiceImplTest {
 
     @Test
     @WithMockUser(username = "test", roles = "USUARIO")
-    void deberiaGuardarInmueble_unicamenteUsuarioLogueado() {
+    void deberiaGuardarInmueble_conUsuarioLogueado() {
         //GIVEN
         when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.of(usuario));
 
@@ -142,7 +143,7 @@ class InmuebleServiceImplTest {
     }
 
     @Test
-    void deberiaActualizarInmueble(){
+    void deberiaActualizarInmueble_conUsuarioLogueado() {
         //GIVEN
         when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.ofNullable(usuario));
         when(inmuebleRepository.findById(1L)).thenReturn(Optional.of(new Inmueble()));
@@ -154,5 +155,21 @@ class InmuebleServiceImplTest {
         //THEN
         verify(inmuebleRepository).save(any(Inmueble.class));
         verify(inmuebleRepository).findById(1L);
+    }
+
+    @Test
+    void deberiaEliminarInmueble_conUsuarioLogueado() {
+        //GIVEN
+        Inmueble inmueble = new Inmueble(1L, "test", 1000, "test",
+                1899, 1, 2, 3, 4,
+                100, TipoPropiedad.CASA, null, usuario);
+        when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.ofNullable(usuario));
+        when(inmuebleRepository.findById(1L)).thenReturn(Optional.of(inmueble));
+
+        //WHEN
+        inmuebleService.eliminarInmueble(1L);
+
+        //THEN
+        verify(inmuebleRepository).deleteById(1L);
     }
 }

@@ -5,6 +5,7 @@ import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
+import idforideas.bonpland.exception.UsuarioSinPermisoException;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
@@ -82,7 +83,24 @@ public class InmuebleServiceImpl implements InmuebleService {
 
     @Override
     @Transactional
-    public int eliminarInmueble(Long id) {
-        return 0;
+    public void eliminarInmueble(Long id) {
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado"));
+
+
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo para realizar esta acción");
+        }
+
+        Inmueble inmueble = inmuebleRepository.findById(id)
+                .orElseThrow(() -> new InmuebleNoEncontradoException("Inmueble no encontrado"));
+
+        if (usuario.getId() != inmueble.getUsuario().getId()) {
+            throw new UsuarioSinPermisoException("No tienes permiso para realizar esta acción");
+        }
+        inmuebleRepository.deleteById(id);
     }
+
 }
