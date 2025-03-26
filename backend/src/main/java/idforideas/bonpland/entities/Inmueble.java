@@ -37,7 +37,7 @@ public class Inmueble implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "codigo")
+    @Column(name = "codigo",unique = true)
     private int codigo;
 
     @Basic(optional = false)
@@ -78,7 +78,6 @@ public class Inmueble implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "tipo_propiedad")
     @Enumerated(EnumType.STRING)
     private TipoPropiedad tipoPropiedad;

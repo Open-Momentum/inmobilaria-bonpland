@@ -1,5 +1,6 @@
 package idforideas.bonpland.dto.inmuebles;
 
+import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.entities.Foto;
 import idforideas.bonpland.enumerations.TipoPropiedad;
 import jakarta.persistence.*;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record InmuebleDTO(
+public record InmuebleDTO (
 
         Long id,
 
@@ -42,8 +43,7 @@ public record InmuebleDTO(
         double metrosCuadrados,
 
         @NotNull
-        @Size(min = 1, max = 20)
         TipoPropiedad tipoPropiedad
 
-) {
+) implements DTO{
 }

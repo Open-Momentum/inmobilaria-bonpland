@@ -10,11 +10,10 @@ import idforideas.bonpland.repository.InmuebleRepository;
 import idforideas.bonpland.repository.UsuarioRepository;
 import idforideas.bonpland.service.impl.InmuebleServiceImpl;
 
+import static idforideas.bonpland.utils.TestUtil.getInmuebleDto;
 import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.unibo.tuprolog.solve.stdlib.primitive.Op;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,14 +57,13 @@ class InmuebleServiceImplTest {
 
     @BeforeEach
     void init() {
-        dto = getDto();
+        dto = getInmuebleDto();
         usuario = getUsuario();
         Authentication auth = new UsernamePasswordAuthenticationToken(usuario.getCorreo(), null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     @Test
-    @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaGuardarInmueble_conUsuarioLogueado() {
         //GIVEN
         when(usuarioRepository.findByCorreo(usuario.getCorreo())).thenReturn(Optional.of(usuario));
@@ -159,10 +157,6 @@ class InmuebleServiceImplTest {
         verify(inmuebleRepository, never()).save(any());
     }
 
-    private static @NotNull InmuebleDTO getDto() {
-        return new InmuebleDTO(1L, "descripcion", 1000, "Direccion", 1999,
-                3, 4, 1, 1, 100, TipoPropiedad.CASA);
-    }
 
     @Test
     void deberiaActualizarInmueble_conUsuarioLogueado() {
@@ -194,4 +188,5 @@ class InmuebleServiceImplTest {
         //THEN
         verify(inmuebleRepository).deleteById(1L);
     }
+
 }
