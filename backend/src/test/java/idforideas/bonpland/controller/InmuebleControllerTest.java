@@ -136,4 +136,34 @@ class InmuebleControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaRetornar400ActualizandoConDTOSinId() throws Exception {
+        //GIVEN
+        InmuebleDTO dtoSinId = new InmuebleDTO(null,
+                "test",
+                "test",
+                1000,
+                10,
+                3,
+                3,
+                3,
+                100,
+                TipoPropiedad.CASA);
+        when(inmuebleService.actualizarInmueble(dtoSinId))
+                .thenThrow(new IdInexistenteException("El id no puede ser nulo para realizar esta acción"));
+
+        //WHEN
+        mockMvc.perform(put("/api/inmuebles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dtoSinId)))
+
+                //THEN
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.error").value("El id no puede ser nulo para realizar esta acción"));
+
+        verify(inmuebleService).actualizarInmueble(dtoSinId);
+
+    }
 }
