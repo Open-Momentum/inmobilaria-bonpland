@@ -7,6 +7,7 @@ import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
+import idforideas.bonpland.mapper.impl.InmuebleRespuestaMapper;
 import idforideas.bonpland.security.CustomUserDetailService;
 import idforideas.bonpland.security.JwtService;
 import idforideas.bonpland.service.InmuebleService;
@@ -29,13 +30,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(InmuebleController.class)
 @ExtendWith(MockitoExtension.class)
-@Import({SecurityConfig.class, InmuebleMapper.class})
+@Import({SecurityConfig.class, InmuebleMapper.class,InmuebleRespuestaMapper.class})
 class InmuebleControllerTest {
     private InmuebleDTO dto;
     private Inmueble inmueble;
@@ -71,6 +72,24 @@ class InmuebleControllerTest {
 
                 //THEN
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.descripcion").value("descripcion"))
+                .andExpect(jsonPath("$.direccion").value("direccion"));
+
+    }
+
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaBuscarInmuebleYRetornar200() throws Exception {
+        //GIVEN
+        when(inmuebleService.buscarInmueblePorId(1L)).thenReturn(inmueble);
+
+        //WHEN
+        mockMvc.perform(get("/api/inmuebles/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
                 .andExpect(jsonPath("$.direccion").value("direccion"));

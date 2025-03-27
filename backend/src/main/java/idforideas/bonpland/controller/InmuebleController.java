@@ -9,10 +9,7 @@ import idforideas.bonpland.service.InmuebleService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -35,6 +32,13 @@ public class InmuebleController {
 
         return ResponseEntity.created(buildURI(inmueble.getId()))
                 .body(dto);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<InmuebleResponseDTO> buscarPorId(@PathVariable Long id) {
+        Inmueble inmueble = inmuebleService.buscarInmueblePorId(id);
+        InmuebleResponseDTO dto = mapper.map(inmueble);
+        return ResponseEntity.ok().body(dto);
     }
 
     private static URI buildURI(Long id) {
