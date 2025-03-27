@@ -2,10 +2,9 @@ package idforideas.bonpland.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.config.SecurityConfig;
-import idforideas.bonpland.dto.DTO;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
-import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.mapper.impl.InmuebleRespuestaMapper;
 import idforideas.bonpland.security.CustomUserDetailService;
@@ -14,13 +13,10 @@ import idforideas.bonpland.service.InmuebleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 
 import static idforideas.bonpland.utils.TestUtil.getInmuebleDto;
-import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -93,6 +89,24 @@ class InmuebleControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
                 .andExpect(jsonPath("$.direccion").value("direccion"));
+
+    }
+
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaBuscarInmuebleYRetornar404_cuandoNoLoEncuentra() throws Exception {
+        //GIVEN
+        when(inmuebleService.buscarInmueblePorId(1L))
+                .thenThrow(new InmuebleNoEncontradoException("Inmueble no encontrado"));
+
+        //WHEN
+        mockMvc.perform(get("/api/inmuebles/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.error").value("Inmueble no encontrado"));
 
     }
 }

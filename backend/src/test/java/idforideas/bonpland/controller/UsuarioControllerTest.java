@@ -131,7 +131,7 @@ class UsuarioControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = "USUARIO")
-    void deberiaRetornar400buscandoPorId_cuandoNoExiste() throws Exception {
+    void deberiaRetornar404buscandoPorId_cuandoNoExiste() throws Exception {
         //GIVEN
         when(usuarioService.buscarUsuarioPorId(1L)).thenThrow(new UsuarioNoEncontradoException("Usuario no encontrado"));
 
