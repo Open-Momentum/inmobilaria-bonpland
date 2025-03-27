@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(JwtException.class)
+    @ExceptionHandler({JwtException.class})
     public ResponseEntity<Map<String, Object>> handleUnauthorizedException(Exception ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("error", ex.getMessage());

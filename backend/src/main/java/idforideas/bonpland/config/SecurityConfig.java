@@ -5,6 +5,7 @@
 package idforideas.bonpland.config;
 
 import idforideas.bonpland.security.JwtAuthFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +37,22 @@ public class SecurityConfig {
                                                        .requestMatchers("/api/auth/**","/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
                                                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                                                        .requestMatchers("/api/usuarios/**").hasAnyRole("USUARIO", "ADMIN")
-                                                       .anyRequest().authenticated()
-
-                ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                                                       .anyRequest().authenticated())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("{\"error\": \"No estas autenticado. Debes iniciar sesion.\"}");
+                            response.getWriter().flush();
+                        })
+                        .accessDeniedHandler((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("{\"error\": \"No tienes permisos para este recurso.\"}");
+                            response.getWriter().flush();
+                        })
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
