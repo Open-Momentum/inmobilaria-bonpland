@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.config.SecurityConfig;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
+import idforideas.bonpland.enumerations.TipoPropiedad;
+import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.mapper.impl.InmuebleRespuestaMapper;
@@ -72,6 +74,8 @@ class InmuebleControllerTest {
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
                 .andExpect(jsonPath("$.direccion").value("direccion"));
 
+        verify(inmuebleService).guardarInmueble(dto);
+
     }
 
     @Test
@@ -90,6 +94,7 @@ class InmuebleControllerTest {
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
                 .andExpect(jsonPath("$.direccion").value("direccion"));
 
+        verify(inmuebleService).buscarInmueblePorId(1L);
     }
 
     @Test
@@ -108,5 +113,27 @@ class InmuebleControllerTest {
                 .andExpect(jsonPath("$").isMap())
                 .andExpect(jsonPath("$.error").value("Inmueble no encontrado"));
 
+        verify(inmuebleService).buscarInmueblePorId(1L);
     }
+
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaActualizarInmueble() throws Exception {
+        //GIVEN
+        when(inmuebleService.actualizarInmueble(dto)).thenReturn(inmueble);
+
+        //WHEN
+        mockMvc.perform(put("/api/inmuebles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(dto.id()))
+                .andExpect(jsonPath("$.descripcion").value(dto.descripcion()));
+
+        verify(inmuebleService).actualizarInmueble(dto);
+
+    }
+
 }

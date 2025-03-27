@@ -26,19 +26,26 @@ public class InmuebleController {
 
 
     @PostMapping
-    public ResponseEntity<InmuebleResponseDTO> crearInmueble(@Valid @RequestBody InmuebleDTO inmuebleDTO) {
-        Inmueble inmueble = inmuebleService.guardarInmueble(inmuebleDTO);
-        InmuebleResponseDTO dto = mapper.map(inmueble);
+    public ResponseEntity<InmuebleResponseDTO> crearInmueble(@Valid @RequestBody InmuebleDTO requestDto) {
+        Inmueble inmueble = inmuebleService.guardarInmueble(requestDto);
+        InmuebleResponseDTO responseDto = mapper.map(inmueble);
 
         return ResponseEntity.created(buildURI(inmueble.getId()))
-                .body(dto);
+                .body(responseDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InmuebleResponseDTO> buscarPorId(@PathVariable Long id) {
         Inmueble inmueble = inmuebleService.buscarInmueblePorId(id);
-        InmuebleResponseDTO dto = mapper.map(inmueble);
-        return ResponseEntity.ok().body(dto);
+        InmuebleResponseDTO responseDto = mapper.map(inmueble);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<InmuebleResponseDTO> actualizarInmueble(@RequestBody InmuebleDTO requestDto) {
+        Inmueble inmueble = inmuebleService.actualizarInmueble(requestDto);
+        InmuebleResponseDTO responseDto = mapper.map(inmueble);
+        return ResponseEntity.ok(responseDto);
     }
 
     private static URI buildURI(Long id) {

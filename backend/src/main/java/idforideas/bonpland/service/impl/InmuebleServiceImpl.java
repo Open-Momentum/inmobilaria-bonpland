@@ -3,6 +3,7 @@ package idforideas.bonpland.service.impl;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.InmuebleNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioNoEncontradoException;
 import idforideas.bonpland.exception.UsuarioSinPermisoException;
@@ -107,7 +108,7 @@ public class InmuebleServiceImpl implements InmuebleService {
 
     private void validarIdNulo(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("El id no puede ser nulo para realizar esta acción");
+            throw new IdInexistenteException("El id no puede ser nulo para realizar esta acción");
         }
     }
 
