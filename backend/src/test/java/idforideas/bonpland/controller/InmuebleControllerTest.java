@@ -178,4 +178,21 @@ class InmuebleControllerTest {
 
         verify(inmuebleService).eliminarInmueble(1L);
     }
+
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaRetornar404EliminandoPorId_cuandoNoExiste() throws Exception {
+        //WHEN
+
+        doThrow(new InmuebleNoEncontradoException("Inmueble no encontrado"))
+                .when(inmuebleService).eliminarInmueble(1L);
+
+        mockMvc.perform(delete("/api/inmuebles/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isNotFound());
+
+        verify(inmuebleService).eliminarInmueble(1L);
+    }
 }
