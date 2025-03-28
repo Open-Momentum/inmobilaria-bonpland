@@ -89,7 +89,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$._links.self").exists())
                 .andExpect(jsonPath("$.page.totalElements").value(lista.size()));
 
-//        verify(usuarioService).listarUsuarios(any(Pageable.class));
+        verify(usuarioService).listarUsuarios(any(Pageable.class));
     }
 
     @Test

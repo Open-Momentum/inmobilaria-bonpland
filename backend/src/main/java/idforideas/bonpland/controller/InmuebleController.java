@@ -2,12 +2,9 @@ package idforideas.bonpland.controller;
 
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.dto.inmuebles.InmuebleResponseDTO;
-import idforideas.bonpland.dto.usuarios.UsuarioRespuestaDTO;
 import idforideas.bonpland.entities.Inmueble;
-import idforideas.bonpland.mapper.impl.InmuebleMapper;
 import idforideas.bonpland.mapper.impl.InmuebleRespuestaMapper;
 import idforideas.bonpland.service.InmuebleService;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.stream.Collectors;
 
 /**
  * @author Figueroa Mauro
@@ -43,10 +41,10 @@ public class InmuebleController {
     @GetMapping
     public ResponseEntity<?> listarInmuebles (@PageableDefault(size = 10, page = 0)
                                                   Pageable pageable,
-                                              PagedResourcesAssembler<UsuarioRespuestaDTO> pagedResourcesAssembler) {
+                                              PagedResourcesAssembler<InmuebleResponseDTO> pagedResourcesAssembler) {
 
-        Page<Inmueble> inmuebles = inmuebleService.listarInmuebles(pageable);
-        return ResponseEntity.ok(inmuebles);
+        Page<InmuebleResponseDTO> inmuebles = inmuebleService.listarInmuebles(pageable).map(mapper::map);
+        return ResponseEntity.ok(pagedResourcesAssembler.toModel(inmuebles));
     }
 
     @GetMapping("/{id}")

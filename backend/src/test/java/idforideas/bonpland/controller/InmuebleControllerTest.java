@@ -25,6 +25,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -206,13 +209,19 @@ class InmuebleControllerTest {
     @WithMockUser(username = "test", roles = "USUARIO")
     void deberiaListarInmuebles() throws Exception {
         //WHEN
+        Pageable pageable = PageRequest.of(0, 10);
         List<Inmueble> lista = getInmuebles();
+        when(inmuebleService.listarInmuebles(any()))
+                .thenReturn(new PageImpl<>(lista,pageable,lista.size()));
 
         mockMvc.perform(get("/api/inmuebles")
                         .contentType(MediaType.APPLICATION_JSON))
 
                 //THEN
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded").exists())
+                .andExpect(jsonPath("$._embedded.inmuebleResponseDTOList").isArray())
+                .andExpect(jsonPath("$._embedded.inmuebleResponseDTOList.length()").value(lista.size()));
 
         verify(inmuebleService).listarInmuebles(any(Pageable.class));
     }
