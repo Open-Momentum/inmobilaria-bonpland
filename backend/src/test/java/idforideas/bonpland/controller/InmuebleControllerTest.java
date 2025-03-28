@@ -164,6 +164,18 @@ class InmuebleControllerTest {
                 .andExpect(jsonPath("$.error").value("El id no puede ser nulo para realizar esta acción"));
 
         verify(inmuebleService).actualizarInmueble(dtoSinId);
+    }
 
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaEliminarInmuebleYRetornar204() throws Exception {
+        //WHEN
+        mockMvc.perform(delete("/api/inmuebles/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isNoContent());
+
+        verify(inmuebleService).eliminarInmueble(1L);
     }
 }

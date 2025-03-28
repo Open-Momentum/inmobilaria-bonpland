@@ -48,6 +48,12 @@ public class InmuebleController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<InmuebleResponseDTO> eliminarPorId(@PathVariable Long id) {
+        inmuebleService.eliminarInmueble(id);
+        return ResponseEntity.noContent().build();
+    }
+
     private static URI buildURI(Long id) {
         return URI.create("/api/inmuebles/" + id);
     }
