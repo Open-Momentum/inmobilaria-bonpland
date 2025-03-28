@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import idforideas.bonpland.config.SecurityConfig;
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.entities.Inmueble;
+import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.enumerations.TipoPropiedad;
 import idforideas.bonpland.exception.IdInexistenteException;
 import idforideas.bonpland.exception.InmuebleNoEncontradoException;
@@ -17,16 +18,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static idforideas.bonpland.utils.TestUtil.getInmuebleDto;
+import static idforideas.bonpland.utils.TestUtil.getUsuario;
 import static org.mockito.Mockito.*;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -34,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(InmuebleController.class)
 @ExtendWith(MockitoExtension.class)
-@Import({SecurityConfig.class, InmuebleMapper.class,InmuebleRespuestaMapper.class})
+@Import({SecurityConfig.class, InmuebleMapper.class, InmuebleRespuestaMapper.class})
 class InmuebleControllerTest {
     private InmuebleDTO dto;
     private Inmueble inmueble;
@@ -194,5 +200,31 @@ class InmuebleControllerTest {
                 .andExpect(status().isNotFound());
 
         verify(inmuebleService).eliminarInmueble(1L);
+    }
+
+    @Test
+    @WithMockUser(username = "test", roles = "USUARIO")
+    void deberiaListarInmuebles() throws Exception {
+        //WHEN
+        List<Inmueble> lista = getInmuebles();
+
+        mockMvc.perform(get("/api/inmuebles")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                //THEN
+                .andExpect(status().isOk());
+
+        verify(inmuebleService).listarInmuebles(any(Pageable.class));
+    }
+
+
+    public static List<Inmueble> getInmuebles() {
+        List<Inmueble> lista = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Inmueble actual = new Inmueble();
+            actual.setId((long) i + 1);
+            lista.add(actual);
+        }
+        return lista;
     }
 }
