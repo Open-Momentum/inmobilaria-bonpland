@@ -23,6 +23,7 @@ public class UsuarioCompletoDTO implements DTO {
     public static final String CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
     private static final String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,10}$";
 
+    @Schema(example = "1")
     private Long id;
 
     @Schema( example = "John")
