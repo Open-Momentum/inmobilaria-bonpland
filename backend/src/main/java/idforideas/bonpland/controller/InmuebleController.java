@@ -29,7 +29,7 @@ import java.net.URI;
 @RequestMapping("/api/inmuebles")
 @AllArgsConstructor
 public class InmuebleController {
-    private static final String DEFAULT_PAGE = "{\"page\": 0, \"size\": 10, \"sort\": \"tipo_propiedad\"}";
+    private static final String DEFAULT_PAGE = "{\"page\": 0, \"size\": 10, \"sort\": \"tipoPropiedad\"}";
     private final InmuebleService inmuebleService;
     private final InmuebleRespuestaMapper mapper;
 

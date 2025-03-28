@@ -29,53 +29,43 @@ public class Inmueble implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "descripcion")
     private String descripcion;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "codigo",unique = true)
+    @Column(name = "codigo",unique = true, nullable = false)
     private String codigo;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "direccion")
+    @Column(name = "direccion",nullable = false)
     private String direccion;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "codigo_postal")
+    @Column(name = "codigo_postal",nullable = false)
     private int codigoPostal;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_ambientes")
+    @Column(name = "cant_ambientes",nullable = false)
     private int cantAmbientes;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_dormi")
+    @Column(name = "cant_dormi",nullable = false)
     private int cantDormi;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_banos")
+    @Column(name = "cant_banos",nullable = false)
     private int cantBanos;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_cochera")
+    @Column(name = "cant_cochera",nullable = false)
     private int cantCochera;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "metros_cuadrados")
+    @Column(name = "metros_cuadrados",nullable = false)
     private int metrosCuadrados;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "tipo_propiedad")
+    @Column(name = "tipo_propiedad",nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoPropiedad tipoPropiedad;
 

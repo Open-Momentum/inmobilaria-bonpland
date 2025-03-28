@@ -1,6 +1,7 @@
 package idforideas.bonpland.service.impl;
 
 import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
+import idforideas.bonpland.entities.Foto;
 import idforideas.bonpland.entities.Inmueble;
 import idforideas.bonpland.entities.Usuario;
 import idforideas.bonpland.exception.IdInexistenteException;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -73,9 +75,12 @@ public class InmuebleServiceImpl implements InmuebleService {
 
         Inmueble inmuebleEncontrado = inmuebleRepository.findById(dto.id())
                 .orElseThrow(() -> new InmuebleNoEncontradoException("Inmueble no encontrado"));
+        String codigo = inmuebleEncontrado.getCodigo();
+        List<Foto> fotos = inmuebleEncontrado.getFotos();
         inmuebleEncontrado = mapper.map(dto);
         inmuebleEncontrado.setUsuario(usuario);
-
+        inmuebleEncontrado.setCodigo(codigo);
+        inmuebleEncontrado.setFotos(fotos);
         return inmuebleRepository.save(inmuebleEncontrado);
     }
 
