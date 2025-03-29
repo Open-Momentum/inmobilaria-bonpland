@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,56 +29,43 @@ public class Inmueble implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
     @Column(name = "descripcion")
     private String descripcion;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "codigo")
-    private int codigo;
+    @Column(name = "codigo",unique = true, nullable = false)
+    private String codigo;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "direccion")
+    @Column(name = "direccion",nullable = false)
     private String direccion;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "codigo_postal")
+    @Column(name = "codigo_postal",nullable = false)
     private int codigoPostal;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_ambientes")
+    @Column(name = "cant_ambientes",nullable = false)
     private int cantAmbientes;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_dormi")
+    @Column(name = "cant_dormi",nullable = false)
     private int cantDormi;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_banos")
+    @Column(name = "cant_banos",nullable = false)
     private int cantBanos;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cant_cochera")
+    @Column(name = "cant_cochera",nullable = false)
     private int cantCochera;
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "metros_cuadrados")
-    private double metrosCuadrados;
+    @Column(name = "metros_cuadrados",nullable = false)
+    private int metrosCuadrados;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "tipo_propiedad")
+    @Column(name = "tipo_propiedad",nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoPropiedad tipoPropiedad;
 
@@ -86,5 +75,22 @@ public class Inmueble implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuario;
+
+    public Inmueble(Long id, String descripcion, String direccion, int codigoPostal, int cantAmbientes, int cantDormi,
+                    int cantBanos, int cantCochera, int metrosCuadrados, TipoPropiedad tipoPropiedad,
+                    List<Foto> fotos, Usuario usuario) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.direccion = direccion;
+        this.codigoPostal = codigoPostal;
+        this.cantAmbientes = cantAmbientes;
+        this.cantDormi = cantDormi;
+        this.cantBanos = cantBanos;
+        this.cantCochera = cantCochera;
+        this.metrosCuadrados = metrosCuadrados;
+        this.tipoPropiedad = tipoPropiedad;
+        this.fotos = fotos;
+        this.usuario = usuario;
+    }
 
 }

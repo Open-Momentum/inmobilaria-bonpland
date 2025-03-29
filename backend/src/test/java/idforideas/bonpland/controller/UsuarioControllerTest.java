@@ -17,10 +17,8 @@ import org.junit.jupiter.api.Test;
 import static idforideas.bonpland.utils.TestUtil.*;
 import static org.mockito.Mockito.*;
 
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -91,7 +89,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$._links.self").exists())
                 .andExpect(jsonPath("$.page.totalElements").value(lista.size()));
 
-//        verify(usuarioService).listarUsuarios(any(Pageable.class));
+        verify(usuarioService).listarUsuarios(any(Pageable.class));
     }
 
     @Test
@@ -133,7 +131,7 @@ class UsuarioControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = "USUARIO")
-    void deberiaRetornar400buscandoPorId_cuandoNoExiste() throws Exception {
+    void deberiaRetornar404buscandoPorId_cuandoNoExiste() throws Exception {
         //GIVEN
         when(usuarioService.buscarUsuarioPorId(1L)).thenThrow(new UsuarioNoEncontradoException("Usuario no encontrado"));
 

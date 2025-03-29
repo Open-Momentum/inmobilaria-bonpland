@@ -1,8 +1,11 @@
 package idforideas.bonpland.utils;
 
+import idforideas.bonpland.dto.inmuebles.InmuebleDTO;
 import idforideas.bonpland.dto.usuarios.UsuarioCompletoDTO;
 import idforideas.bonpland.entities.Rol;
 import idforideas.bonpland.entities.Usuario;
+import idforideas.bonpland.enumerations.TipoPropiedad;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +46,10 @@ public class TestUtil {
             lista.add(actual);
         }
         return lista;
+    }
+
+    public static @NotNull InmuebleDTO getInmuebleDto() {
+        return new InmuebleDTO(1L, "descripcion", "direccion", 1999,
+                3, 4, 1, 1, 100, TipoPropiedad.CASA);
     }
 }

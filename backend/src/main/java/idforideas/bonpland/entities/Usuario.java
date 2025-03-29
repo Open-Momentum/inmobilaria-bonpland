@@ -18,10 +18,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Usuario implements Serializable {
-    private final static String  CORREO_PATTERN = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]{2,}(\\.[a-zA-Z0-9-]{2,}){1,4}$";
-    private final static String  NOMBRE_PATTERN = "^[a-zA-Z]+( [a-zA-Z]+)*$";
-    private final static String  CLAVE_PATTERN = "^[A-Za-z0-9._\\-@#~&]+$";
-    private final static String TELEFONO_PATTERN = "^\\+\\d{1,3}\\d{6,12}$";
     @Serial
     private final static long serialVersionUID = 1L;
 
